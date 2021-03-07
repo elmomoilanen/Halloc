@@ -1,6 +1,6 @@
 # Halloc - manage heap memory in C #
 
-Heap memory allocator for Linux.
+Heap memory allocator.
 
 ## Install ##
 
@@ -13,3 +13,9 @@ To be added.
 ## Usage ##
 
 To be added.
+
+```C
+
+halloc()
+
+```
