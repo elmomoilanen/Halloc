@@ -10,6 +10,6 @@ To be added.
 
 To be added.
 
-## Use ##
+## Usage ##
 
 To be added.
