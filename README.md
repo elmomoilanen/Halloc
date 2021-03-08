@@ -1,6 +1,6 @@
-# Halloc - manage heap memory in C #
+# Halloc - heap memory allocator in C #
 
-Heap memory allocator.
+To be added.
 
 ## Install ##
 
