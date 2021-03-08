@@ -1,22 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include "common.h"
 
-#include "dll.h"
-#include "memtools.h"
+#include "../src/dll.h"
+#include "../src/memtools.h"
 
-#define ANSI_COLOR_GREEN "\x1b[32m"
-#define ANSI_COLOR_RESET "\x1b[0m"
-
-#define PRINT_SUCCESS(func) printf("%s() %spassed%s\n", (func),\
-    ANSI_COLOR_GREEN, ANSI_COLOR_RESET)
-
-
-typedef int i32;
-typedef unsigned int u32;
-typedef long i64;
-typedef unsigned long u64; 
 
 typedef struct {
     char header[32];
@@ -41,8 +27,13 @@ typedef struct test_z_ {
 // same limit as in halloc.c
 static size_t MAX_PAGE_UNITS = 262145;
 
+void init_memtools_testing()
+{
+    set_system_page_size();
+} 
 
-void test_page_item_registration()
+
+static void test_page_item_registration()
 {
     const char *struct_name = "test_x1";
 
@@ -61,7 +52,7 @@ void test_page_item_registration()
 }
 
 
-void test_page_item_registration_for_few()
+static void test_page_item_registration_for_few()
 {
     vm_page_item_t *page_item = lookup_page_item("test_x2");
     assert(page_item == NULL);
@@ -80,7 +71,7 @@ void test_page_item_registration_for_few()
 }
 
 
-void test_page_item_registration_for_multiple()
+static void test_page_item_registration_for_multiple()
 {
     uint32_t const max_containers_per_page = get_max_page_items_per_page_container();
 
@@ -112,9 +103,12 @@ void test_page_item_registration_for_multiple()
 }
 
 
-void test_free_data_block_allocation_small_size()
+static void test_free_data_block_allocation_small_size()
 {
     const char *struct_name = "test_x";
+
+    register_page_item("test_x", sizeof(test_x));
+
     vm_page_item_t *page_item = lookup_page_item(struct_name);
     assert(page_item != NULL);
 
@@ -138,9 +132,12 @@ void test_free_data_block_allocation_small_size()
 }
 
 
-void test_free_data_block_allocation_medium_size()
+static void test_free_data_block_allocation_medium_size()
 {
     const char *struct_name = "test_y";
+
+    register_page_item("test_y", sizeof(test_y));
+
     vm_page_item_t *page_item = lookup_page_item(struct_name);
     assert(page_item != NULL);
 
@@ -167,9 +164,12 @@ void test_free_data_block_allocation_medium_size()
 }
 
 
-void test_free_data_block_allocation_large_size()
+static void test_free_data_block_allocation_large_size()
 {
     const char *struct_name = "test_z";
+
+    register_page_item("test_z", sizeof(test_z));
+
     vm_page_item_t *page_item = lookup_page_item(struct_name);
     assert(page_item != NULL);
 
@@ -196,9 +196,12 @@ void test_free_data_block_allocation_large_size()
 }
 
 
-void test_free_data_block_allocation_for_consecutive_times()
+static void test_free_data_block_allocation_for_consecutive_times()
 {
-    const char *struct_name = "test_x";
+    const char *struct_name = "test_xx";
+
+    register_page_item("test_xx", sizeof(test_x));
+
     vm_page_item_t *page_item = lookup_page_item(struct_name);
     assert(page_item != NULL);
     assert(page_item->first_page == NULL);
@@ -243,23 +246,13 @@ void test_free_data_block_allocation_for_consecutive_times()
 }
 
 
-int main()
-{
-    set_system_page_size();
-
-    printf("running memtool tests...\n");
-
-    test_page_item_registration();
-    test_page_item_registration_for_few();
-    test_page_item_registration_for_multiple();
-    
-    register_page_item("test_x", sizeof(test_x));
-    register_page_item("test_y", sizeof(test_y));
-    register_page_item("test_z", sizeof(test_z));
-
-    test_free_data_block_allocation_small_size();
-    test_free_data_block_allocation_medium_size();
-    test_free_data_block_allocation_large_size();
-
-    test_free_data_block_allocation_for_consecutive_times();
+test_func memtools_tests[] = {
+    {"page_item_registration", test_page_item_registration},
+    {"page_item_registration_for_few", test_page_item_registration_for_few},
+    {"page_item_registration_for_multiple", test_page_item_registration_for_multiple},
+    {"free_data_block_allocation_small_size", test_free_data_block_allocation_small_size},
+    {"free_data_block_allocation_medium_size", test_free_data_block_allocation_medium_size},
+    {"free_data_block_allocation_large_size", test_free_data_block_allocation_large_size},
+    {"free_data_block_allocation_for_consecutive_times", test_free_data_block_allocation_for_consecutive_times},
+    {NULL, NULL},
 }

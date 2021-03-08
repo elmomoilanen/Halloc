@@ -7,7 +7,7 @@
 
 
 /*
-Do not increase the `MAX_PAGE_UNITS` unless you modify the whole program.
+Do not increase the `MAX_PAGE_UNITS` unless taking care of necessary modifications.
 Assumption is that for one allocation, required memory bytes are less that 2^32 - 1.
 */
 static size_t MAX_PAGE_UNITS = 262145;

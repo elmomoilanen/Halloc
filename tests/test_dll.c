@@ -1,21 +1,7 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include "common.h"
 
-#include "dll.h"
+#include "../src/dll.h"
 
-#define ANSI_COLOR_GREEN "\x1b[32m"
-#define ANSI_COLOR_RESET "\x1b[0m"
-
-#define PRINT_SUCCESS(func) printf("%s() %spassed%s\n", (func),\
-    ANSI_COLOR_GREEN, ANSI_COLOR_RESET)
-
-
-typedef int i32;
-typedef unsigned int u32;
-typedef long i64;
-typedef unsigned long u64; 
 
 typedef struct {
     u64 x, x2;
@@ -25,7 +11,7 @@ typedef struct {
 } test_type_t;
 
 
-int16_t test_type_comparer(void *left, void *right)
+static int16_t test_type_comparer(void *left, void *right)
 {
     dll_node_t *left_node = left;
     dll_node_t *right_node = right;
@@ -40,14 +26,14 @@ int16_t test_type_comparer(void *left, void *right)
 }
 
 
-int16_t test_type_comparer_(void *left, void *right)
+static int16_t test_type_comparer_(void *left, void *right)
 {
     if( ((test_type_t *)left)->x > ((test_type_t *)right)->x ) return -1;
     return 1;
 }
 
 
-void test_offset_macro()
+static void test_offset_macro()
 {
     assert(GET_ITEM_OFFSET(test_type_t, x) == 0);
     assert(GET_ITEM_OFFSET(test_type_t, x2) == 8);
@@ -59,7 +45,7 @@ void test_offset_macro()
 }
 
 
-void test_data_offset_macro()
+static void test_data_offset_macro()
 {
     test_type_t test_struct = {0};
     test_struct.x = 1;
@@ -78,7 +64,7 @@ void test_data_offset_macro()
 }
 
 
-void test_node_pushing()
+static void test_node_pushing()
 {
     test_type_t test_struct = {0}, test_struct2 = {0};
     test_struct.x = 1;
@@ -104,7 +90,7 @@ void test_node_pushing()
 }
 
 
-void test_traverse_forward_macro()
+static void test_traverse_forward_macro()
 {
     u32 n_structs = 3, node_counter = 0;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
@@ -129,7 +115,7 @@ void test_traverse_forward_macro()
 }
 
 
-void test_data_offset_macro_multiple_nodes()
+static void test_data_offset_macro_multiple_nodes()
 {
     u32 const structs = 3;
     test_type_t *test_structs = calloc(structs, sizeof *test_structs); 
@@ -164,7 +150,7 @@ void test_data_offset_macro_multiple_nodes()
 }
 
 
-void test_traverse_backward_macro()
+static void test_traverse_backward_macro()
 {
     u32 n_structs = 5, node_counter = 0;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
@@ -206,7 +192,7 @@ void test_traverse_backward_macro()
 }
 
 
-void test_node_appending()
+static void test_node_appending()
 {
     u32 const n_structs = 4;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
@@ -240,7 +226,7 @@ void test_node_appending()
 }
 
 
-void test_adding_node_after()
+static void test_adding_node_after()
 {
     test_type_t test_struct = {0};
     test_struct.x = 1;
@@ -281,7 +267,7 @@ void test_adding_node_after()
 }
 
 
-void test_adding_node_before()
+static void test_adding_node_before()
 {
     test_type_t ts = {0};
     ts.x2 = 5;
@@ -316,7 +302,7 @@ void test_adding_node_before()
 }
 
 
-void test_unlinking_node()
+static void test_unlinking_node()
 {
     u32 const n_structs = 3;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
@@ -349,7 +335,7 @@ void test_unlinking_node()
 }
 
 
-void test_removal_of_node()
+static void test_removal_of_node()
 {
     u32 const n_structs = 5;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
@@ -389,7 +375,7 @@ void test_removal_of_node()
 }
 
 
-void test_adding_and_removal_of_nodes()
+static void test_adding_and_removal_of_nodes()
 {
     u32 const n_structs = 10;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
@@ -439,7 +425,7 @@ void test_adding_and_removal_of_nodes()
 }
 
 
-void test_dll_sorting()
+static void test_dll_sorting()
 {
     u32 const n_structs = 7;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
@@ -483,7 +469,7 @@ void test_dll_sorting()
 }
 
 
-void test_priority_queue()
+static void test_priority_queue()
 {
     test_type_t tstructs[4] = {{0}};
     tstructs[0].x = 2;
@@ -521,22 +507,20 @@ void test_priority_queue()
 }
 
 
-int main()
-{
-    printf("running dll tests...\n");
-
-    test_offset_macro();
-    test_data_offset_macro();
-    test_node_pushing();
-    test_traverse_forward_macro();
-    test_data_offset_macro_multiple_nodes();
-    test_traverse_backward_macro();
-    test_node_appending();
-    test_adding_node_after();
-    test_adding_node_before();
-    test_unlinking_node();
-    test_removal_of_node();
-    test_adding_and_removal_of_nodes();
-    test_dll_sorting();
-    test_priority_queue();
-}
+test_func dll_tests[] = {
+    {"offset_macro", test_offset_macro},
+    {"data_offset_macro", test_data_offset_macro},
+    {"node_pushing", test_node_pushing},
+    {"traverse_forward_macro", test_traverse_forward_macro},
+    {"data_offset_macro_multiple_nodes", test_data_offset_macro_multiple_nodes},
+    {"traverse_backward_macro", test_traverse_backward_macro},
+    {"node_appending", test_node_appending},
+    {"adding_node_after", test_adding_node_after},
+    {"adding_node_before", test_adding_node_before},
+    {"unlinking_node", test_unlinking_node},
+    {"removal_of_node", test_removal_of_node},
+    {"adding_and_removal_of_nodes", test_adding_and_removal_of_nodes},
+    {"dll_sorting", test_dll_sorting},
+    {"priority_queue", test_priority_queue},
+    {NULL, NULL},
+};

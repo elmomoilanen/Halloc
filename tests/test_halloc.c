@@ -1,23 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include "common.h"
 
-#include "dll.h"
-#include "memtools.h"
-#include "halloc.h"
-
-#define ANSI_COLOR_GREEN "\x1b[32m"
-#define ANSI_COLOR_RESET "\x1b[0m"
-
-#define PRINT_SUCCESS(func) printf("%s() %spassed%s\n", (func),\
-    ANSI_COLOR_GREEN, ANSI_COLOR_RESET)
-
-
-typedef int i32;
-typedef unsigned int u32;
-typedef long i64;
-typedef unsigned long u64; 
+#include "../src/dll.h"
+#include "../src/memtools.h"
+#include "../src/halloc.h"
 
 
 typedef struct {
@@ -28,7 +13,7 @@ typedef struct {
 } product;
 
 
-void test_allocation_small()
+static void test_allocation_small()
 {
     product *p = halloc(product, 1);
 
@@ -41,7 +26,7 @@ void test_allocation_small()
 }
 
 
-void test_allocation_medium()
+static void test_allocation_medium()
 {
     u32 const alloc_count = 100;
 
@@ -61,7 +46,7 @@ void test_allocation_medium()
 }
 
 
-void test_allocation_large()
+static void test_allocation_large()
 {
     u32 const alloc_count = 10000;
 
@@ -81,11 +66,9 @@ void test_allocation_large()
 }
 
 
-int main()
-{
-    printf("running halloc tests...\n");
-
-    test_allocation_small();
-    test_allocation_medium();
-    test_allocation_large();
-}
+test_func halloc_tests[] = {
+    {"allocation_small", test_allocation_small},
+    {"allocation_medium", test_allocation_medium},
+    {"allocation_large", test_allocation_large},
+    {NULL, NULL},
+};

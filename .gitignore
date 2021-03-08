@@ -1,0 +1,9 @@
+src/*.o
+src/*.d
+
+tests/*.o
+tests/*.d
+
+halloc.so
+
+.vscode
