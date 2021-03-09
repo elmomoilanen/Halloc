@@ -1,6 +1,6 @@
 #include "common.h"
 
-#include "../src/dll.h"
+#include "dll.h"
 
 
 typedef struct {

@@ -1,7 +1,7 @@
 #include "common.h"
 
-#include "../src/dll.h"
-#include "../src/memtools.h"
+#include "dll.h"
+#include "memtools.h"
 
 
 typedef struct {
@@ -255,4 +255,4 @@ test_func memtools_tests[] = {
     {"free_data_block_allocation_large_size", test_free_data_block_allocation_large_size},
     {"free_data_block_allocation_for_consecutive_times", test_free_data_block_allocation_for_consecutive_times},
     {NULL, NULL},
-}
+};

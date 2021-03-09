@@ -2,13 +2,9 @@
 
 To be added.
 
-## Install ##
+## Build ##
 
-To be added.
 
-## Tests ##
-
-To be added.
 
 ## Usage ##
 

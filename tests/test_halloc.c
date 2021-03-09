@@ -1,8 +1,8 @@
 #include "common.h"
 
-#include "../src/dll.h"
-#include "../src/memtools.h"
-#include "../src/halloc.h"
+#include "dll.h"
+#include "memtools.h"
+#include "halloc.h"
 
 
 typedef struct {

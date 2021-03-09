@@ -1,9 +1,5 @@
-src/*.o
-src/*.d
-
-tests/*.o
-tests/*.d
-
-halloc.so
+*.o
+*.a
+test_main
 
 .vscode
