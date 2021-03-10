@@ -14,22 +14,22 @@
 static size_t SYSTEM_PAGE_SIZE = 0;
 static vm_page_item_container_t *first_vm_page_item_container = NULL;
 
-void set_system_page_size()
+void _set_system_page_size()
 {
     SYSTEM_PAGE_SIZE = sysconf(_SC_PAGESIZE);
 }
 
-size_t get_page_max_available_memory(size_t units)
+size_t _get_page_max_available_memory(size_t units)
 {
     return SYSTEM_PAGE_SIZE * units - GET_FIELD_OFFSET(vm_page_t, page_memory);
 }
 
-size_t get_max_page_items_per_page_container()
+size_t _get_max_page_items_per_page_container()
 {
     return MAX_PAGE_ITEMS_PER_PAGE_CONTAINER;
 }
 
-size_t get_system_page_size()
+size_t _get_system_page_size()
 {
     return SYSTEM_PAGE_SIZE;
 }
@@ -58,7 +58,7 @@ static void _delete_memory_mapping(void *addr, size_t units)
     }
 }
 
-vm_page_item_t* lookup_page_item(const char *struct_name)
+vm_page_item_t* _lookup_page_item(const char *struct_name)
 {
     vm_page_item_container_t *vm_page_item_container = first_vm_page_item_container;
 
@@ -86,10 +86,10 @@ static void _register_page_item_to_first_container(const char *struct_name, uint
 
     first_vm_page_item_container->vm_page_items->struct_size = struct_size;
     first_vm_page_item_container->vm_page_items->first_page = NULL;
-    init_node(&first_vm_page_item_container->vm_page_items->heap_root_node);
+    _init_node(&first_vm_page_item_container->vm_page_items->heap_root_node);
 }
 
-void register_page_item(const char *struct_name, uint32_t struct_size)
+void _register_page_item(const char *struct_name, uint32_t struct_size)
 {
     if(first_vm_page_item_container == NULL)
     {
@@ -118,7 +118,7 @@ void register_page_item(const char *struct_name, uint32_t struct_size)
     strncpy(vm_page_item->struct_name, struct_name, MAX_STRUCT_NAME_SIZE);
     vm_page_item->struct_size = struct_size;
     vm_page_item->first_page = NULL;
-    init_node(&vm_page_item->heap_root_node);
+    _init_node(&vm_page_item->heap_root_node);
 }
 
 
@@ -158,11 +158,11 @@ static vm_page_t* _allocate_vm_page(vm_page_item_t *vm_page_item, uint32_t alloc
 
     _mark_vm_page_empty(vm_page);
 
-    vm_page->meta_block.block_size = get_page_max_available_memory(required_page_count);
+    vm_page->meta_block.block_size = _get_page_max_available_memory(required_page_count);
     vm_page->system_page_count = required_page_count;
 
     vm_page->meta_block.offset = GET_FIELD_OFFSET(vm_page_t, meta_block);
-    init_node(&vm_page->meta_block.heap_node);
+    _init_node(&vm_page->meta_block.heap_node);
 
     vm_page->prev = NULL;
     vm_page->next = NULL;
@@ -181,7 +181,7 @@ static vm_page_t* _allocate_vm_page(vm_page_item_t *vm_page_item, uint32_t alloc
     return vm_page;
 }
 
-int16_t compare_free_block_sizes(void *meta_block_lhs, void *meta_block_rhs)
+int16_t _compare_free_block_sizes(void *meta_block_lhs, void *meta_block_rhs)
 {
     if( ((meta_block_t *)meta_block_lhs)->block_size > ((meta_block_t *)meta_block_rhs)->block_size )
     {
@@ -190,7 +190,7 @@ int16_t compare_free_block_sizes(void *meta_block_lhs, void *meta_block_rhs)
     return 1;
 }
 
-static void update_meta_block_bindings(meta_block_t *alloc_meta_block, meta_block_t *free_meta_block)
+static void _update_meta_block_bindings(meta_block_t *alloc_meta_block, meta_block_t *free_meta_block)
 {
     free_meta_block->next = alloc_meta_block->next;
     if(free_meta_block->next != NULL) free_meta_block->next->prev = free_meta_block;
@@ -199,7 +199,7 @@ static void update_meta_block_bindings(meta_block_t *alloc_meta_block, meta_bloc
     alloc_meta_block->next = free_meta_block;
 }
 
-static bool_t split_free_data_block_for_allocation(vm_page_item_t *vm_page_item, meta_block_t *meta_block, uint32_t alloc_size)
+static bool_t _split_free_data_block_for_allocation(vm_page_item_t *vm_page_item, meta_block_t *meta_block, uint32_t alloc_size)
 {   
     if(alloc_size > meta_block->block_size)
     {
@@ -212,7 +212,7 @@ static bool_t split_free_data_block_for_allocation(vm_page_item_t *vm_page_item,
     meta_block->is_free = false;
     meta_block->block_size = alloc_size;
     // this is safe, node here is never a head node of the priority queue
-    unlink_node(&meta_block->heap_node);
+    _unlink_node(&meta_block->heap_node);
 
     if(remain_size < sizeof(meta_block_t))
     {
@@ -230,22 +230,22 @@ static bool_t split_free_data_block_for_allocation(vm_page_item_t *vm_page_item,
     next_meta_block->block_size = remain_size - sizeof(meta_block_t);
     next_meta_block->offset = meta_block->offset + sizeof(meta_block_t) + meta_block->block_size;
 
-    init_node(&next_meta_block->heap_node);
+    _init_node(&next_meta_block->heap_node);
 
-    add_to_priority_queue(
+    _add_to_priority_queue(
         &vm_page_item->heap_root_node,
         &next_meta_block->heap_node,
         GET_FIELD_OFFSET(meta_block_t, heap_node),
-        &compare_free_block_sizes
+        &_compare_free_block_sizes
     );
 
-    update_meta_block_bindings(meta_block, next_meta_block);
+    _update_meta_block_bindings(meta_block, next_meta_block);
 
     return true;
 }
 
 
-meta_block_t* allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t alloc_size)
+meta_block_t* _allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t alloc_size)
 {
     meta_block_t *largest_free_meta_block = _get_largest_free_meta_block(vm_page_item);
 
@@ -253,21 +253,21 @@ meta_block_t* allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t al
     {
         vm_page_t *vm_page = _allocate_vm_page(vm_page_item, alloc_size);
 
-        add_to_priority_queue(
+        _add_to_priority_queue(
             &vm_page_item->heap_root_node,
             &vm_page->meta_block.heap_node,
             GET_FIELD_OFFSET(meta_block_t, heap_node),
-            &compare_free_block_sizes
+            &_compare_free_block_sizes
         );
         
-        if( split_free_data_block_for_allocation(vm_page_item, &vm_page->meta_block, alloc_size) )
+        if( _split_free_data_block_for_allocation(vm_page_item, &vm_page->meta_block, alloc_size) )
         {
             return &vm_page->meta_block;
         }
         return NULL;
     }
 
-    if( split_free_data_block_for_allocation(vm_page_item, largest_free_meta_block, alloc_size) )
+    if( _split_free_data_block_for_allocation(vm_page_item, largest_free_meta_block, alloc_size) )
     {
         return largest_free_meta_block;
     }
@@ -275,7 +275,7 @@ meta_block_t* allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t al
 }
 
 
-static void merge_free_data_blocks(meta_block_t *meta_block_lhs, meta_block_t *meta_block_rhs)
+static void _merge_free_data_blocks(meta_block_t *meta_block_lhs, meta_block_t *meta_block_rhs)
 {
     meta_block_lhs->next = meta_block_rhs->next;
     meta_block_lhs->block_size += sizeof(meta_block_t) + meta_block_rhs->block_size;
@@ -309,7 +309,7 @@ static void _free_vm_page(vm_page_t *vm_page)
 }
 
 
-void free_data_blocks(meta_block_t *meta_block)
+void _free_data_blocks(meta_block_t *meta_block)
 {
     meta_block_t *updated_lowest_meta_block = meta_block;
     vm_page_t *vm_page = GET_META_PAGE(meta_block, meta_block->offset);
@@ -332,7 +332,7 @@ void free_data_blocks(meta_block_t *meta_block)
 
     if(next_meta_block && next_meta_block->is_free == true)
     {
-        merge_free_data_blocks(meta_block, next_meta_block);
+        _merge_free_data_blocks(meta_block, next_meta_block);
         updated_lowest_meta_block = meta_block;
     }
 
@@ -340,28 +340,28 @@ void free_data_blocks(meta_block_t *meta_block)
 
     if(prev_meta_block && prev_meta_block->is_free)
     {
-        merge_free_data_blocks(prev_meta_block, meta_block);
+        _merge_free_data_blocks(prev_meta_block, meta_block);
         updated_lowest_meta_block = prev_meta_block;
     }
 
     if(_is_vm_page_empty(vm_page))
     {
-        unlink_node(&vm_page->meta_block.heap_node);
+        _unlink_node(&vm_page->meta_block.heap_node);
         _free_vm_page(vm_page);
     }
     else
     {
-        add_to_priority_queue(
+        _add_to_priority_queue(
             &vm_page->page_item->heap_root_node,
             &updated_lowest_meta_block->heap_node,
             GET_FIELD_OFFSET(meta_block_t, heap_node),
-            &compare_free_block_sizes
+            &_compare_free_block_sizes
         );
     }
 }
 
 
-void walk_vm_page_items()
+void _walk_vm_page_items()
 {
     vm_page_item_container_t *vm_page_item_container = first_vm_page_item_container;
     uint32_t page_counter = 0;
@@ -388,7 +388,7 @@ void walk_vm_page_items()
 }
 
 
-void print_memory_usage()
+void _print_memory_usage()
 {
     vm_page_item_container_t *vm_page_item_container = first_vm_page_item_container;
 
@@ -426,9 +426,9 @@ void print_memory_usage()
 }
 
 
-void walk_vm_pages(const char *struct_name)
+void _walk_vm_pages(const char *struct_name)
 {
-    vm_page_item_t* vm_page_item = lookup_page_item(struct_name);
+    vm_page_item_t* vm_page_item = _lookup_page_item(struct_name);
 
     if(vm_page_item == NULL)
     {

@@ -94,20 +94,20 @@ typedef struct vm_page_item_container_ {
 #define TRAVERSE_META_BLOCKS_IN_PAGE_END(meta_block) }}
 
 
-void set_system_page_size();
-size_t get_page_max_available_memory(size_t units);
-size_t get_max_page_items_per_page_container();
-size_t get_system_page_size();
+void _set_system_page_size();
+size_t _get_page_max_available_memory(size_t units);
+size_t _get_max_page_items_per_page_container();
+size_t _get_system_page_size();
 
-vm_page_item_t* lookup_page_item(const char *struct_name);
-void register_page_item(const char *struct_name, uint32_t struct_size);
+vm_page_item_t* _lookup_page_item(const char *struct_name);
+void _register_page_item(const char *struct_name, uint32_t struct_size);
 
-meta_block_t* allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t alloc_size);
-void free_data_blocks(meta_block_t *meta_block);
+meta_block_t* _allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t alloc_size);
+void _free_data_blocks(meta_block_t *meta_block);
 
-void walk_vm_page_items();
-void print_memory_usage();
-void walk_vm_pages(const char *struct_name);
+void _walk_vm_page_items();
+void _print_memory_usage();
+void _walk_vm_pages(const char *struct_name);
 
 
 #endif /* __MEMTOOLS__ */

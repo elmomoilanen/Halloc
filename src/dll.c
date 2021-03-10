@@ -4,20 +4,20 @@
 #include "dll.h"
 
 
-void init_node(dll_node_t *node)
+void _init_node(dll_node_t *node)
 {
     node->prev = NULL;
     node->next = NULL;
 }
 
-void push_node(dll_t *dll, dll_node_t *node)
+void _push_node(dll_t *dll, dll_node_t *node)
 {
     node->next = dll->head;
     if(node->next != NULL) node->next->prev = node;
     dll->head = node;
 }
 
-void append_node(dll_t *dll, dll_node_t *node)
+void _append_node(dll_t *dll, dll_node_t *node)
 {
     if(dll->head == NULL)
     {
@@ -36,7 +36,7 @@ void append_node(dll_t *dll, dll_node_t *node)
     node->prev = active_node;
 }
 
-void add_node_after(dll_node_t *node, dll_node_t *new_node)
+void _add_node_after(dll_node_t *node, dll_node_t *new_node)
 {
     new_node->next = node->next;
     if(new_node->next != NULL) new_node->next->prev = new_node;
@@ -44,7 +44,7 @@ void add_node_after(dll_node_t *node, dll_node_t *new_node)
     new_node->prev = node;
 }
 
-void add_node_before(dll_node_t *node, dll_node_t *new_node)
+void _add_node_before(dll_node_t *node, dll_node_t *new_node)
 {
     // not safe for head node, use push in that case
     new_node->next = node;
@@ -56,7 +56,7 @@ void add_node_before(dll_node_t *node, dll_node_t *new_node)
     new_node->next->prev = new_node;
 }
 
-void unlink_node(dll_node_t *node)
+void _unlink_node(dll_node_t *node)
 {
     // not safe for head node, use remove_node in that case
     if(node->prev == NULL)
@@ -84,19 +84,19 @@ void unlink_node(dll_node_t *node)
     }
 }
 
-void remove_node(dll_t *dll, dll_node_t *node)
+void _remove_node(dll_t *dll, dll_node_t *node)
 {
     if(dll->head == node) dll->head = node->next;
-    unlink_node(node);
+    _unlink_node(node);
 }
 
 
-void add_to_priority_queue(dll_node_t *head, dll_node_t *new_node, uint32_t node_offset, int16_t (*func)(void *, void *))
+void _add_to_priority_queue(dll_node_t *head, dll_node_t *new_node, uint32_t node_offset, int16_t (*func)(void *, void *))
 {
     // head->next is the first real node
     if(head->next == NULL && head->prev == NULL) 
     {
-        add_node_after(head, new_node);
+        _add_node_after(head, new_node);
         return;
     }
 
@@ -110,7 +110,7 @@ void add_to_priority_queue(dll_node_t *head, dll_node_t *new_node, uint32_t node
     if( func(GET_DLL_DATA(new_node, node_offset), GET_DLL_DATA(head->next, node_offset)) < 0 )
     {
         // negative return value, lhs value is greater than rhs
-        add_node_after(head, new_node);
+        _add_node_after(head, new_node);
         return;
     }
 
@@ -122,14 +122,14 @@ void add_to_priority_queue(dll_node_t *head, dll_node_t *new_node, uint32_t node
         if( func(GET_DLL_DATA(new_node, node_offset), GET_DLL_DATA(node, node_offset)) < 0 )
         {
             // negative return value, lhs value is greater than rhs
-            add_node_before(node, new_node);
+            _add_node_before(node, new_node);
             return;
         }
         active_node = node;
     }
     TRAVERSE_DLL_FORWARD_END(node);
 
-    add_node_after(active_node, new_node);
+    _add_node_after(active_node, new_node);
 }
 
 
@@ -173,14 +173,14 @@ static dll_node_t* _merge(dll_node_t *left, dll_node_t *right, int16_t (*func)(v
     return right;
 }
 
-dll_node_t* msort(dll_node_t *head, int16_t (*func)(void *, void *))
+dll_node_t* _msort(dll_node_t *head, int16_t (*func)(void *, void *))
 {
     if(head == NULL || head->next == NULL) return head;
 
     dll_node_t *tail = _split_dll(head);
 
-    head = msort(head, func);
-    tail = msort(tail, func);
+    head = _msort(head, func);
+    tail = _msort(tail, func);
 
     return _merge(head, tail, func);
 }

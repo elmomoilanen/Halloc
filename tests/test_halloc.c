@@ -2,7 +2,10 @@
 
 #include "dll.h"
 #include "memtools.h"
-#include "halloc.h"
+#include "halloc_internal.h"
+
+#define halloc(struct, units) (_halloc(#struct, sizeof(struct), units))
+#define hfree(data) (_hfree(data))
 
 
 typedef struct {
@@ -66,9 +69,41 @@ static void test_allocation_large()
 }
 
 
+static void test_allocation_huge()
+{
+    u32 const alloc_count = 500000;
+
+    product *p = halloc(product, alloc_count);
+
+    assert(p != NULL);
+
+    assert(p[100].year == 0);
+    assert(p[alloc_count - 1].year == 0);
+
+    hfree(p);
+
+    PRINT_SUCCESS(__func__);
+
+}
+
+
+static void test_allocation_oversize()
+{
+    u32 const alloc_count = 50000000;
+
+    product *p = halloc(product, alloc_count);
+
+    assert(p == NULL);
+
+    PRINT_SUCCESS(__func__);
+}
+
+
 test_func halloc_tests[] = {
     {"allocation_small", test_allocation_small},
     {"allocation_medium", test_allocation_medium},
     {"allocation_large", test_allocation_large},
+    {"allocation_huge", test_allocation_huge},
+    {"allocation_oversize", test_allocation_oversize},
     {NULL, NULL},
 };

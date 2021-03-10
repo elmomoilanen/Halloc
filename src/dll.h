@@ -41,19 +41,19 @@ typedef int16_t (*comp_func)(void *, void *);
 #define TRAVERSE_DLL_BACKWARD_END(dll_node) }}
 
 
-void init_node(dll_node_t *node);
-void push_node(dll_t *dll, dll_node_t *node);
-void append_node(dll_t *dll, dll_node_t *node);
+void _init_node(dll_node_t *node);
+void _push_node(dll_t *dll, dll_node_t *node);
+void _append_node(dll_t *dll, dll_node_t *node);
 
-void add_node_after(dll_node_t *node, dll_node_t *new_node);
-void add_node_before(dll_node_t *node, dll_node_t *new_node);
+void _add_node_after(dll_node_t *node, dll_node_t *new_node);
+void _add_node_before(dll_node_t *node, dll_node_t *new_node);
 
-void unlink_node(dll_node_t *node);
-void remove_node(dll_t *dll, dll_node_t *node);
+void _unlink_node(dll_node_t *node);
+void _remove_node(dll_t *dll, dll_node_t *node);
 
-void add_to_priority_queue(dll_node_t *head, dll_node_t *new_node, uint32_t node_offset, int16_t (*func)(void *, void *));
+void _add_to_priority_queue(dll_node_t *head, dll_node_t *new_node, uint32_t node_offset, int16_t (*func)(void *, void *));
 
-dll_node_t* msort(dll_node_t *head, int16_t (*func)(void *, void *));
+dll_node_t* _msort(dll_node_t *head, int16_t (*func)(void *, void *));
 
 
 #endif /* __DLL__ */

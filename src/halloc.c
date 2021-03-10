@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "memtools.h"
-#include "halloc.h"
+#include "halloc_internal.h"
 
 
 /*
@@ -28,21 +28,21 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
         return NULL;
     }
 
-    set_system_page_size();
+    _set_system_page_size();
 
-    if(struct_size * units > get_page_max_available_memory(MAX_PAGE_UNITS))
+    if(struct_size * units > _get_page_max_available_memory(MAX_PAGE_UNITS))
     {
-        uint32_t const max_mem = get_page_max_available_memory(MAX_PAGE_UNITS);
+        uint32_t const max_mem = _get_page_max_available_memory(MAX_PAGE_UNITS);
         printf("Error %s(): requested memory allocation size exceeds implementation limit of %u bytes\n", __func__, max_mem);
         return NULL;
     }
 
-    vm_page_item_t *vm_page_item = lookup_page_item(struct_name);
+    vm_page_item_t *vm_page_item = _lookup_page_item(struct_name);
 
     if(vm_page_item == NULL)
     {
-        register_page_item(struct_name, struct_size);
-        vm_page_item = lookup_page_item(struct_name);
+        _register_page_item(struct_name, struct_size);
+        vm_page_item = _lookup_page_item(struct_name);
 
         if(vm_page_item == NULL)
         {
@@ -51,7 +51,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
         }
     }
 
-    meta_block_t *free_meta_block = allocate_free_data_block(vm_page_item, units * vm_page_item->struct_size);
+    meta_block_t *free_meta_block = _allocate_free_data_block(vm_page_item, units * vm_page_item->struct_size);
 
     if(free_meta_block != NULL)
     {
@@ -69,26 +69,26 @@ void _hfree(void* data)
 
     meta_block_t *meta_block = (meta_block_t *)((char *)data - sizeof(meta_block_t));
     
-    free_data_blocks(meta_block);
+    _free_data_blocks(meta_block);
 }
 
 
-void print_saved_page_items()
+void _print_saved_page_items()
 {
     printf("currently save virtual memory page items...\n");
-    walk_vm_page_items();
+    _walk_vm_page_items();
 }
 
 
-void print_total_memory_usage()
+void _print_total_memory_usage()
 {
     printf("showing total memory usage by halloc...\n");
-    print_memory_usage();
+    _print_memory_usage();
 }
 
 
 void _print_type_memory_usage(char *struct_name)
 {
     printf("showing detailed memory usage for type %s...\n", struct_name);
-    walk_vm_pages(struct_name);
+    _walk_vm_pages(struct_name);
 }

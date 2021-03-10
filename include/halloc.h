@@ -19,8 +19,7 @@ Returns:
     NULL-pointer otherwise.
 */
 
-void* _halloc(char *struct_name, uint32_t struct_size, size_t units);
-#define halloc(struct, units) (_halloc(#struct, sizeof(struct), units)) 
+#define halloc(struct, units) (_halloc(#struct, sizeof(struct), units))
 
 
 /*
@@ -32,8 +31,7 @@ Params:
     pointer to allocated data (i.e., the starting address)
 */
 
-void _hfree(void* data);
-#define hfree(data) (_hfree(data));
+#define hfree(data) (_hfree(data))
 
 
 /*
@@ -43,11 +41,10 @@ See currently saved page items (struct types), total memory usage by halloc or
 detailed memory footprint for a specific struct type.
 */
 
-void print_saved_page_items();
-void print_total_memory_usage();
+#define halloc_print_saved_page_items() (_print_saved_page_items())
 
-void _print_type_memory_usage(char *struct_name);
-#define print_type_memory_usage(struct) (_print_type_memory_usage(#struct))
+#define halloc_print_total_memory_usage() (_print_total_memory_usage())
 
+#define halloc_print_type_memory_usage(struct) (_print_type_memory_usage(#struct))
 
 #endif /* __HALLOC__ */
