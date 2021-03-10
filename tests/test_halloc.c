@@ -4,9 +4,6 @@
 #include "memtools.h"
 #include "halloc.h"
 
-#define halloc(struct, units) (_halloc(#struct, sizeof(struct), units))
-#define hfree(data) (_hfree(data))
-
 
 typedef struct {
     char name[256];
