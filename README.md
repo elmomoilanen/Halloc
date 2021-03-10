@@ -1,6 +1,6 @@
 # Halloc - heap memory allocator in C #
 
-This library implements a custom dynamic memory allocator `Halloc` that somewhat resembles calloc defined in the C standard library. Halloc uses `mmap()` to create memory mappings in the virtual address space such that the mappings are not backed by files. For successful mappings, halloc returns a pointer to starting address of the new memory allocation and all bytes of the allocation are initialised to 0. One-time memory allocations are supported roughly up to 1 GiB by variating the length of mmap memory mappings. Halloc library provides various memory statistics to be used alongside its main components that allocate and deallocate memory.
+This library implements a custom dynamic memory allocator `Halloc` that somewhat resembles calloc defined in the C standard library. Halloc uses `mmap()` to create memory mappings in the virtual address space such that the mappings are anonymous and thus not backed by files. For successful mappings, halloc returns a pointer to starting address of the new memory allocation and all bytes of the allocation are initialised to 0. One-time memory allocations are supported roughly up to 1 GiB by variating the length of mmap memory mappings. Halloc library provides various memory statistics to be used alongside its main components that allocate and deallocate memory.
 
 ## Build ##
 
