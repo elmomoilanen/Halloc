@@ -14,7 +14,7 @@ In case of build failure or tests not passing, this library may not be usable in
 
 ## Usage ##
 
-Header file `halloc.h` defines public APIs for the library. Use `halloc()` to request new memory allocation and `hfree()` to deallocate this memory. In addition, there are three functions to provide detailed memory statistics of total or type specific memory usage.
+Header file `halloc.h` defines public APIs for the library. Use `halloc()` to request new memory allocation and `hfree()` to deallocate this memory. In addition, there are three functions to provide detailed memory statistics for total or type specific memory usage.
 
 Following code section gives an example of using halloc. It contains code necessary only to halloc.
 
