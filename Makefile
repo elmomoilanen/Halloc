@@ -14,10 +14,10 @@ TEST_TARGET=test_main
 all: $(TARGET) $(TEST_TARGET)
 
 $(OBJS): $(SRC)
-	$(CC) $(CFLAGS) -c -Isrc/ $(SRC)
+	$(CC) $(CFLAGS) -c -Iinclude/ -Isrc/ $(SRC)
 
 $(TEST_OBJS): $(TEST_SRC)
-	$(CC) $(CFLAGS) -c -Isrc/ $(TEST_SRC)
+	$(CC) $(CFLAGS) -c -Iinclude/ -Isrc/ $(TEST_SRC)
 
 $(TEST_TARGET): $(OBJS) $(TEST_OBJS)
 	$(CC) -o $(TEST_TARGET) $(OBJS) $(TEST_OBJS)

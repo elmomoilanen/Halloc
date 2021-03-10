@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "memtools.h"
-#include "halloc_internal.h"
+#include "halloc.h"
 
 
 /*
