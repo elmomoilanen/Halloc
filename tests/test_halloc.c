@@ -26,6 +26,27 @@ static void test_allocation_small()
 }
 
 
+static void test_allocation_small_other()
+{
+    u32 const alloc_count = 25;
+
+    product *p = halloc(product, alloc_count);
+
+    assert(p != NULL);
+
+    for(u32 j=0; j<alloc_count; ++j)
+    {
+        assert( (p+j) != NULL );
+        assert( (*(p+j)).year == 0 );
+        assert( (*(p+j)).volume == 0 );
+    }
+
+    hfree(p);
+
+    PRINT_SUCCESS(__func__);
+}
+
+
 static void test_allocation_medium()
 {
     u32 const alloc_count = 100;
@@ -75,7 +96,16 @@ static void test_allocation_huge()
     assert(p != NULL);
 
     assert(p[100].year == 0);
+    assert(p[100].weight == 0);
+    assert(p[100].volume == 0);
+
+    assert(p[100000].weight == 0);
+    assert(p[100000].year == 0);
+    assert(p[100000].volume == 0);
+
     assert(p[alloc_count - 1].year == 0);
+    assert(p[alloc_count - 1].weight == 0);
+    assert(p[alloc_count - 1].volume == 0);
 
     hfree(p);
 
@@ -90,6 +120,7 @@ static void test_allocation_oversize()
 
     product *p = halloc(product, alloc_count);
 
+    // allocation should fail due to its size, an error message should also appear in stdout
     assert(p == NULL);
 
     PRINT_SUCCESS(__func__);
@@ -98,6 +129,7 @@ static void test_allocation_oversize()
 
 test_func halloc_tests[] = {
     {"allocation_small", test_allocation_small},
+    {"allocation_small_other", test_allocation_small_other},
     {"allocation_medium", test_allocation_medium},
     {"allocation_large", test_allocation_large},
     {"allocation_huge", test_allocation_huge},

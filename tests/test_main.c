@@ -28,7 +28,7 @@ static void run_halloc_tests()
 
 int main()
 {
-    printf("running tests...\n\n");
+    printf("\nrunning tests...\n\n");
 
     printf("running dll tests...\n");
     run_dll_tests();
@@ -40,4 +40,6 @@ int main()
 
     printf("\nrunning halloc tests...\n");
     run_halloc_tests();
+
+    printf("\n");
 }
