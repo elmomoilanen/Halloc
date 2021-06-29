@@ -31,6 +31,8 @@ int main() {
   
   assert(p != NULL);
   
+  halloc_print_saved_page_items();
+  
   halloc_print_total_memory_usage();
   halloc_print_type_memory_usage(typeX);
   
