@@ -40,10 +40,10 @@ int main() {
 }
 ```
 
-When using halloc in your c program, remember to tell the compiler include path (-I) for the header file `halloc.h` and library path (-L) and name (-l) for the shared library file libhalloc.a. E.g. a command
+When using halloc library in your C program, remember to indicate the compiler the include path (-I) for the header file `halloc.h` and library path (-L) and name (-l) for the shared library file `libhalloc.a`. E.g. a shell command
 
 ```bash
-gcc test.c -Iinclude -L. -lhalloc -o test (CFLAGS)
+gcc test_prog.c -Iinclude -L. -lhalloc -o test_prog -Wall -Wextra -Werror -std=c11 -g
 ```
 
-would compile a test.c source file given in project's root directory.
+would compile a test_prog.c source code file placed in root directory of the halloc library.
