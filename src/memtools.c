@@ -423,7 +423,7 @@ void _print_memory_usage()
             }
             TRAVERSE_PAGES_END(vm_page);
 
-            printf("struct: %-15s    blocks: %-5u    free blocks: %-5u   used memory in bytes: %u\n\n",
+            printf("struct: %-32s    blocks: %-5u    free blocks: %-5u   used memory in bytes: %u\n\n",
             vm_page_item->struct_name, total_block_count, free_block_count, memory_usage);
         }
         TRAVERSE_PAGE_ITEMS_END(vm_page_item);

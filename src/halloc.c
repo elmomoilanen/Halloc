@@ -75,7 +75,7 @@ void _hfree(void* data)
 
 void _print_saved_page_items()
 {
-    printf("currently save virtual memory page items...\n");
+    printf("currently saved virtual memory page items...\n");
     _walk_vm_page_items();
 }
 
@@ -89,6 +89,6 @@ void _print_total_memory_usage()
 
 void _print_type_memory_usage(char *struct_name)
 {
-    printf("showing detailed memory usage for type %s...\n", struct_name);
+    printf("showing detailed memory usage for type %s...\n\n", struct_name);
     _walk_vm_pages(struct_name);
 }
