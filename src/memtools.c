@@ -42,7 +42,7 @@ static void* _create_memory_mapping(size_t units)
     {
         printf("Error %s(): Virtual memory mapping failed\n", __func__);
         perror("mmap: ");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
     memset(vm_page, 0, units * SYSTEM_PAGE_SIZE);
     return (void*) vm_page;
@@ -54,7 +54,6 @@ static void _delete_memory_mapping(void *addr, size_t units)
     {
         printf("Error %s(): Deletion of virtual memory mapping failed\n", __func__);
         perror("munmap: ");
-        exit(EXIT_FAILURE);
     }
 }
 
@@ -80,6 +79,7 @@ vm_page_item_t* _lookup_page_item(const char *struct_name)
 static void _register_page_item_to_first_container(const char *struct_name, uint32_t struct_size)
 {
     first_vm_page_item_container = _create_memory_mapping(1);
+    if (first_vm_page_item_container == NULL) return;
     first_vm_page_item_container->next = NULL;
 
     strncpy(first_vm_page_item_container->vm_page_items->struct_name, struct_name, MAX_STRUCT_NAME_SIZE);
@@ -109,6 +109,8 @@ void _register_page_item(const char *struct_name, uint32_t struct_size)
     if(counter == MAX_PAGE_ITEMS_PER_PAGE_CONTAINER)
     {
         vm_page_item_container_t *new_vm_page_item_container = _create_memory_mapping(1);
+        if (new_vm_page_item_container == NULL) return;
+
         new_vm_page_item_container->next = first_vm_page_item_container;
         first_vm_page_item_container = new_vm_page_item_container;
 
@@ -155,6 +157,8 @@ static vm_page_t* _allocate_vm_page(vm_page_item_t *vm_page_item, uint32_t alloc
 {
     uint32_t const required_page_count = alloc_size/SYSTEM_PAGE_SIZE + 1;
     vm_page_t *vm_page = _create_memory_mapping(required_page_count);
+
+    if (vm_page == NULL) return NULL;
 
     _mark_vm_page_empty(vm_page);
 
@@ -253,6 +257,8 @@ meta_block_t* _allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t a
     {
         vm_page_t *vm_page = _allocate_vm_page(vm_page_item, alloc_size);
 
+        if (vm_page == NULL) return NULL;
+
         _add_to_priority_queue(
             &vm_page_item->heap_root_node,
             &vm_page->meta_block.heap_node,
@@ -260,14 +266,14 @@ meta_block_t* _allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t a
             &_compare_free_block_sizes
         );
         
-        if( _split_free_data_block_for_allocation(vm_page_item, &vm_page->meta_block, alloc_size) )
+        if(_split_free_data_block_for_allocation(vm_page_item, &vm_page->meta_block, alloc_size))
         {
             return &vm_page->meta_block;
         }
         return NULL;
     }
 
-    if( _split_free_data_block_for_allocation(vm_page_item, largest_free_meta_block, alloc_size) )
+    if(_split_free_data_block_for_allocation(vm_page_item, largest_free_meta_block, alloc_size))
     {
         return largest_free_meta_block;
     }
