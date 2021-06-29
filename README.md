@@ -46,4 +46,4 @@ When using halloc library in your C program, remember to indicate the compiler t
 gcc test_prog.c -Iinclude -L. -lhalloc -o test_prog -Wall -Wextra -Werror -std=c11 -g
 ```
 
-would compile a test_prog.c source code file placed in root directory of the halloc library.
+would compile a `test_prog.c` source code file placed in root directory of the halloc library.
