@@ -16,7 +16,7 @@ In case of build failure or tests not passing, this library may not be usable in
 
 Header file `halloc.h` defines public APIs for the library. Use `halloc()` to request new memory allocation and `hfree()` to deallocate this memory. In addition, there are three functions to provide detailed memory statistics for total or type specific memory usage.
 
-Following code section gives an example of using halloc. It contains code necessary only to halloc.
+Following code section gives an example use case of halloc, containing code necessary only to halloc. The code snippet shows what makes the halloc library interesting, which is the mentioned availability of couple of virtual memory usage statistics, each beginning with the "halloc_print" prefix.
 
 ```C
 #include "halloc.h"
@@ -37,6 +37,8 @@ int main() {
   halloc_print_type_memory_usage(typeX);
   
   hfree(p);
+  
+  halloc_print_total_memory_usage();
 }
 ```
 
