@@ -40,7 +40,7 @@ static void* _create_memory_mapping(size_t units)
 
     if(vm_page == MAP_FAILED)
     {
-        printf("Error %s(): Virtual memory mapping failed\n", __func__);
+        fprintf(stderr, "%s(): virtual memory mapping failed.\n", __func__);
         perror("mmap: ");
         return NULL;
     }
@@ -52,7 +52,7 @@ static void _delete_memory_mapping(void *addr, size_t units)
 {
     if(munmap(addr, units * SYSTEM_PAGE_SIZE) == -1)
     {
-        printf("Error %s(): Deletion of virtual memory mapping failed\n", __func__);
+        fprintf(stderr, "%s(): deletion of virtual memory mapping failed.\n", __func__);
         perror("munmap: ");
     }
 }
@@ -438,7 +438,7 @@ void _walk_vm_pages(const char *struct_name)
 
     if(vm_page_item == NULL)
     {
-        printf("Error %s(): Struct `%s` hasn't been registered yet\n", __func__, struct_name);
+        fprintf(stderr, "%s(): struct `%s` hasn't been registered yet.\n", __func__, struct_name);
         return;
     }
 

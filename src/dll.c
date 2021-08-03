@@ -103,7 +103,7 @@ void _add_to_priority_queue(dll_node_t *head, dll_node_t *new_node, uint32_t nod
     if(head->next == NULL)
     {
         // should never land here, if program logic ok
-        printf("Implementation error %s(): priority queue head next node NULL but prev node not NULL\n", __func__);
+        fprintf(stderr, "%s(): priority queue head next node NULL but prev node not NULL.\n", __func__);
         exit(EXIT_FAILURE);
     }
 

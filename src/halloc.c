@@ -17,14 +17,14 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
 {
     if(units < 1)
     {
-        printf("Error %s(): minimum allocation units equals 1\n", __func__);
+        fprintf(stderr, "%s(): minimum allocation units equals 1\n", __func__);
         return NULL;
     }
 
     if(strlen(struct_name) >= MAX_STRUCT_NAME_SIZE)
     {
         uint32_t const max_size = MAX_STRUCT_NAME_SIZE;
-        printf("Error %s(): struct name is not allowed to be larger than %u characters\n", __func__, max_size-1);
+        fprintf(stderr, "%s(): struct name is not allowed to be larger than %u characters\n", __func__, max_size-1);
         return NULL;
     }
 
@@ -33,7 +33,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
     if(struct_size * units > _get_page_max_available_memory(MAX_PAGE_UNITS))
     {
         uint32_t const max_mem = _get_page_max_available_memory(MAX_PAGE_UNITS);
-        printf("Error %s(): requested memory allocation size exceeds implementation limit of %u bytes\n", __func__, max_mem);
+        fprintf(stderr, "%s(): requested memory allocation size exceeds implementation limit of %u bytes\n", __func__, max_mem);
         return NULL;
     }
 
@@ -46,7 +46,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
 
         if(vm_page_item == NULL)
         {
-            printf("Error %s(): structure %s registeration failed\n", __func__, struct_name);
+            fprintf(stderr, "%s(): structure %s registeration failed\n", __func__, struct_name);
             return NULL;
         }
     }
