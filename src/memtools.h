@@ -9,7 +9,7 @@
 
 #define GCC_COMPILER (defined(__GNUC__) && !defined(__clang__))
 
-#define MAX_STRUCT_NAME_SIZE 32
+#define MAX_STRUCT_NAME_SIZE 64
 
 typedef enum bool_ {false, true} bool_t;
 
