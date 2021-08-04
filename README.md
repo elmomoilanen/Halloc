@@ -1,5 +1,7 @@
 # Halloc - heap memory allocator #
 
+[![main](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml/badge.svg)](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml)
+
 This library implements a custom and experimental dynamic memory allocator `Halloc` in C language that somewhat resembles the C standard library function calloc. Halloc uses `mmap` to create memory mappings in the virtual address space such that the mappings are anonymous and not backed by the filesystem. For successful mappings, halloc returns a pointer to the starting address of the new memory allocation such that all bytes of the allocation are initialised to zero. One-time memory allocations are supported roughly up to 1 GiB by variating the length of mmap's memory mappings. Halloc library provides various memory statistics to be used alongside its main components that allocate and deallocate memory. Notice that this library is not thread-safe and thus should not be used with multi-threaded code.
 
 ## Build ##
