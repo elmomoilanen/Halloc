@@ -4,24 +4,10 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    name: Build
+    name: Build process
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - run: make
-      
-  test:
-    name: Test
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: make test
-
-  clean:
-    name: Clean
-    needs: [build, test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: make clean
+    - run: make test
+    - run: make clean
