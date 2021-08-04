@@ -14,7 +14,7 @@ Build the library and run tests with the following command in a shell
 make && make test && make clean
 ```
 
-that on success places the static library file `libhalloc.a` in top-level of this library folder structure.
+which on success places the static library file `libhalloc.a` in top-level of this library folder structure. The last clean command removes unneeded objective and test files.
 
 In case of build failure or tests not passing, this library may not be usable in your system "as is".
 
