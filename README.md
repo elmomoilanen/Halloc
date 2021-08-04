@@ -6,7 +6,7 @@ This library implements a custom and experimental dynamic memory allocator `Hall
 
 ## Build ##
 
-As mentioned above, the library is experimental in its nature and hence was not written to be completely portable. However, it's expected to work in most common Linux distros (e.g. in Ubuntu) and in macOS. Library uses C11 standard.
+As mentioned above, the library is experimental in its nature and hence was not written to be completely portable. However, it's expected to work in most common Linux distros (e.g. Ubuntu) and macOS. Library uses C11 standard.
 
 Main build target is the halloc library which would be a static library with the .a suffix at the end of build process.
 
