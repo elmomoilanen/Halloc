@@ -25,23 +25,38 @@ Header file `halloc.h` defines public APIs for the library. Use `halloc()` to re
 Following code section gives an example use case of the halloc library. The code snippet illustrates functionality that makes the library interesting, e.g. the mentioned availability of few virtual memory usage statistics, each beginning with the "halloc_print" prefix.
 
 ```C
+#include <stdlib.h>
+#include <assert.h>
+
 #include "halloc.h"
 
 typedef struct {
-  char name[25];
-  long values[10];
+  double *data;
+  unsigned int size;
 } typeX;
 
+
 int main() {
-  typeX *p = halloc(typeX, 10);
-  
+  // allocate one unit of struct `typeX`
+  typeX *p = halloc(typeX, 1);
+
   assert(p != NULL);
+
+  p->size = 25;
+  // allocate double typed pointer
+  p->data = halloc(double, p->size);
+
+  assert(p->data != NULL);
+  // data pointer ready to be used
+  p->data[p->size - 1] = 11.0; 
   
   halloc_print_saved_page_items();
-  
   halloc_print_total_memory_usage();
+
   halloc_print_type_memory_usage(typeX);
-  
+  halloc_print_type_memory_usage(double);
+
+  hfree(p->data);
   hfree(p);
   
   halloc_print_total_memory_usage();

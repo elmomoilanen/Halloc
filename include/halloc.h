@@ -18,7 +18,7 @@ halloc user API.
 Halloc allocates requested memory in a `calloc`-like manner.
 
 Params:
-    struct (type of the struct)
+    struct (type of the struct, can be also one of primitive types e.g. double)
     units (allocation count)
 
 Returns:
@@ -32,7 +32,7 @@ Returns:
 /*
 hfree user API.
 
-Hfree deallocated previously allocated memory.
+Hfree deallocates previously allocated memory.
 
 Params:
     pointer to allocated data (i.e., the starting address)

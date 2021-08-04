@@ -12,6 +12,56 @@ typedef struct {
     u32 volume;
 } product;
 
+typedef struct {
+    u32 *data;
+    u32 size;
+} typeA;
+
+
+static void test_allocation_primitive_type_small()
+{
+    u32 const alloc_count = 25;
+
+    i32 *ptr = halloc(i32, alloc_count);
+    assert(ptr != NULL);
+
+    assert(ptr[0] == 0);
+    assert(ptr[alloc_count - 1] == 0);
+
+    hfree(ptr);
+
+    PRINT_SUCCESS(__func__);
+}
+
+
+static void test_allocation_primitive_type_large()
+{
+    u32 const alloc_count = 10000;
+
+    i32 *ptr = halloc(i32, alloc_count);
+    assert(ptr != NULL);
+
+    assert(ptr[0] == 0);
+    assert(ptr[alloc_count - 1] == 0);
+
+    hfree(ptr);
+
+    PRINT_SUCCESS(__func__);
+}
+
+
+static void test_allocation_primitive_type_with_space()
+{
+    u32 const alloc_count = 1;
+
+    unsigned int *ptr = halloc(unsigned int, alloc_count);
+    assert(ptr != NULL);
+
+    hfree(ptr);
+
+    PRINT_SUCCESS(__func__);
+}
+
 
 static void test_allocation_small()
 {
@@ -127,12 +177,37 @@ static void test_allocation_oversize()
 }
 
 
+static void test_double_allocation()
+{
+    typeA *typeA = halloc(typeA, 1);
+    assert(typeA != NULL);
+    assert(typeA->data == 0);
+
+    typeA->size = 50;
+
+    typeA->data = halloc(u32, typeA->size);
+    assert(typeA->data != NULL);
+
+    assert(typeA->data[0] == 0);
+    assert(typeA->data[typeA->size - 1] == 0);
+
+    hfree(typeA->data);
+    hfree(typeA);
+
+    PRINT_SUCCESS(__func__);
+}
+
+
 test_func halloc_tests[] = {
+    {"allocation_primitive_type_small", test_allocation_primitive_type_small},
+    {"allocation_primitive_type_large", test_allocation_primitive_type_large},
+    {"allocation_primitive_type_with_space", test_allocation_primitive_type_with_space},
     {"allocation_small", test_allocation_small},
     {"allocation_small_other", test_allocation_small_other},
     {"allocation_medium", test_allocation_medium},
     {"allocation_large", test_allocation_large},
     {"allocation_huge", test_allocation_huge},
     {"allocation_oversize", test_allocation_oversize},
+    {"double_allocation", test_double_allocation},
     {NULL, NULL},
 };
