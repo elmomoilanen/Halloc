@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <string.h>
 #include <assert.h>
 
@@ -16,6 +17,7 @@
     ANSI_COLOR_GREEN, ANSI_COLOR_RESET)
 
 
+typedef bool bool_t;
 typedef int i32;
 typedef unsigned int u32;
 typedef long i64;

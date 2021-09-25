@@ -2,16 +2,15 @@
 #define __MEMTOOLS__
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <stddef.h>
 
 #include "dll.h"
 
 
-#define GCC_COMPILER (defined(__GNUC__) && !defined(__clang__))
-
 #define MAX_STRUCT_NAME_SIZE 64
 
-typedef enum bool_ {false, true} bool_t;
+typedef bool bool_t;
 
 typedef struct meta_block_ {
   bool_t is_free;
