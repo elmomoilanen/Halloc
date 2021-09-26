@@ -82,7 +82,7 @@ static void test_page_item_registration_for_multiple()
     {
         char name[12];
         snprintf(name, sizeof name, "%s_%d", "test", j);
-
+        
         _register_page_item(name, sizeof(test_x));
     }
 

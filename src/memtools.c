@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include <memory.h>
 #include <unistd.h>
 
@@ -16,7 +17,20 @@ static vm_page_item_container_t *first_vm_page_item_container = NULL;
 
 void _set_system_page_size()
 {
-    SYSTEM_PAGE_SIZE = sysconf(_SC_PAGESIZE);
+    long page_size = sysconf(_SC_PAGESIZE);
+
+    if (page_size == -1) {
+        fprintf(stderr, "%s(): %s\n", __func__, strerror(errno));
+    }
+
+    if (page_size < SYS_MIN_PAGE_SIZE) {
+        fprintf(stderr, "%s(): system page size %ld doesn't meet the required minimum %d\n",
+        __func__, page_size, SYS_MIN_PAGE_SIZE);
+        
+        exit(EXIT_FAILURE);
+    }
+
+    SYSTEM_PAGE_SIZE = page_size;
 }
 
 size_t _get_page_max_available_memory(size_t units)
@@ -122,7 +136,6 @@ void _register_page_item(const char *struct_name, uint32_t struct_size)
     vm_page_item->first_page = NULL;
     _init_node(&vm_page_item->heap_root_node);
 }
-
 
 static bool_t _is_vm_page_empty(vm_page_t *vm_page)
 {
