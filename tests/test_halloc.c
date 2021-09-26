@@ -17,6 +17,11 @@ typedef struct {
     u32 size;
 } typeA;
 
+typedef struct {
+  double *data;
+  unsigned int size;
+} typeX;
+
 
 static void test_allocation_primitive_type_small()
 {
@@ -177,7 +182,7 @@ static void test_allocation_oversize()
 }
 
 
-static void test_double_allocation()
+static void test_nested_allocation()
 {
     typeA *typeA = halloc(typeA, 1);
     assert(typeA != NULL);
@@ -198,6 +203,24 @@ static void test_double_allocation()
 }
 
 
+static void test_readme_example_allocation()
+{
+    typeX *p = halloc(typeX, 1);
+    assert(p != NULL);
+    
+    p->size = 25;
+    p->data = halloc(double, p->size);
+    assert(p->data != NULL);
+
+    p->data[p->size - 1] = 0.0;
+  
+    hfree(p->data);
+    hfree(p);
+
+    PRINT_SUCCESS(__func__);
+}
+
+
 test_func halloc_tests[] = {
     {"allocation_primitive_type_small", test_allocation_primitive_type_small},
     {"allocation_primitive_type_large", test_allocation_primitive_type_large},
@@ -208,6 +231,7 @@ test_func halloc_tests[] = {
     {"allocation_large", test_allocation_large},
     {"allocation_huge", test_allocation_huge},
     {"allocation_oversize", test_allocation_oversize},
-    {"double_allocation", test_double_allocation},
+    {"nested_allocation", test_nested_allocation},
+    {"readme_example_allocation", test_readme_example_allocation},
     {NULL, NULL},
 };
