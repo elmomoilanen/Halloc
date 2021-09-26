@@ -71,7 +71,7 @@ typedef struct vm_page_item_container_ {
 #define TRAVERSE_PAGE_ITEMS_BEGIN(vm_page_item) \
 {   \
     size_t count = 0;   \
-    for(; count < MAX_PAGE_ITEMS_PER_PAGE_CONTAINER && vm_page_item->struct_size; vm_page_item++, count++){ \
+    for(; count < MAX_PAGE_ITEMS_PER_PAGE_CONTAINER && vm_page_item->struct_size; vm_page_item++, count++){
 
 #define TRAVERSE_PAGE_ITEMS_END(vm_page_item) }}
 
