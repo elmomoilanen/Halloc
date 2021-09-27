@@ -35,7 +35,11 @@ void _set_system_page_size()
 
 size_t _get_page_max_available_memory(size_t units)
 {
-    return SYSTEM_PAGE_SIZE * units - GET_FIELD_OFFSET(vm_page_t, page_memory);
+    size_t const total_page_size = SYSTEM_PAGE_SIZE * units;
+
+    return (
+        total_page_size > GET_FIELD_OFFSET(vm_page_t, page_memory)
+    ) ? total_page_size - GET_FIELD_OFFSET(vm_page_t, page_memory) : 0;
 }
 
 size_t _get_max_page_items_per_page_container()
@@ -62,6 +66,7 @@ static void* _create_memory_mapping(size_t units)
         perror("mmap: ");
         return NULL;
     }
+
     memset(vm_page, 0, units * SYSTEM_PAGE_SIZE);
     return (void*) vm_page;
 }
@@ -179,6 +184,12 @@ static vm_page_t* _allocate_vm_page(vm_page_item_t *vm_page_item, uint32_t alloc
     _mark_vm_page_empty(vm_page);
 
     vm_page->meta_block.block_size = _get_page_max_available_memory(required_page_count);
+
+    if (vm_page->meta_block.block_size == 0) {
+        _delete_memory_mapping((void *)vm_page, required_page_count);
+        return NULL;
+    }
+
     vm_page->system_page_count = required_page_count;
 
     vm_page->meta_block.offset = GET_FIELD_OFFSET(vm_page_t, meta_block);
@@ -204,13 +215,6 @@ int16_t _compare_free_block_sizes(void *meta_block_lhs, void *meta_block_rhs)
     return (
         ((meta_block_t *)meta_block_lhs)->block_size > ((meta_block_t *)meta_block_rhs)->block_size
     ) ? -1 : 1;
-
-    /*
-    if(((meta_block_t *)meta_block_lhs)->block_size > ((meta_block_t *)meta_block_rhs)->block_size) {
-        return -1;
-    }
-    return 1;
-    */
 }
 
 static void _update_meta_block_bindings(meta_block_t *alloc_meta_block, meta_block_t *free_meta_block)

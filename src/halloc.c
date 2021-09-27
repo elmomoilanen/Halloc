@@ -32,6 +32,10 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
     _set_system_page_size();
     uint32_t const max_mem = _get_page_max_available_memory(MAX_PAGE_UNITS);
 
+    if (max_mem == 0) {
+        fprintf(stderr, "%s(): new page maximal available memory equals zero.\n", __func__);
+        return NULL;
+    }
     if(struct_size * units > max_mem) {
         fprintf(stderr,
         "%s(): requested memory allocation size exceeds implementation limit of %u bytes.\n",
@@ -58,7 +62,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
         memset((char *)(free_meta_block + 1), 0, free_meta_block->block_size);
         return (void *)(free_meta_block + 1);
     }
-    
+
     return NULL;
 }
 
