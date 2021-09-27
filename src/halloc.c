@@ -15,37 +15,38 @@ static size_t MAX_PAGE_UNITS = 262145;
 
 void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
 {
-    if(units < 1)
-    {
+    if(units < 1) {
         fprintf(stderr, "%s(): minimum allocation units equals 1.\n", __func__);
         return NULL;
     }
 
-    if(strlen(struct_name) >= MAX_STRUCT_NAME_SIZE)
-    {
+    if(strlen(struct_name) >= MAX_STRUCT_NAME_SIZE) {
         uint32_t const max_size = MAX_STRUCT_NAME_SIZE;
-        fprintf(stderr, "%s(): struct name is not allowed to be larger than %u characters.\n", __func__, max_size-1);
+
+        fprintf(stderr, "%s(): struct name is not allowed to be larger than %u characters.\n",
+        __func__, max_size-1);
+
         return NULL;
     }
 
     _set_system_page_size();
     uint32_t const max_mem = _get_page_max_available_memory(MAX_PAGE_UNITS);
 
-    if(struct_size * units > max_mem)
-    {
-        fprintf(stderr, "%s(): requested memory allocation size exceeds implementation limit of %u bytes.\n", __func__, max_mem);
+    if(struct_size * units > max_mem) {
+        fprintf(stderr,
+        "%s(): requested memory allocation size exceeds implementation limit of %u bytes.\n",
+        __func__, max_mem);
+
         return NULL;
     }
 
     vm_page_item_t *vm_page_item = _lookup_page_item(struct_name);
 
-    if(vm_page_item == NULL)
-    {
+    if(vm_page_item == NULL) {
         _register_page_item(struct_name, struct_size);
         vm_page_item = _lookup_page_item(struct_name);
 
-        if(vm_page_item == NULL)
-        {
+        if(vm_page_item == NULL) {
             fprintf(stderr, "%s(): structure %s registeration failed.\n", __func__, struct_name);
             return NULL;
         }
@@ -53,12 +54,11 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
 
     meta_block_t *free_meta_block = _allocate_free_data_block(vm_page_item, units * vm_page_item->struct_size);
 
-    if(free_meta_block != NULL)
-    {
+    if(free_meta_block != NULL) {
         memset((char *)(free_meta_block + 1), 0, free_meta_block->block_size);
         return (void *)(free_meta_block + 1);
     }
-
+    
     return NULL;
 }
 
