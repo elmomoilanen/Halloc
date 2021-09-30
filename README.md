@@ -8,7 +8,7 @@ This library implements a custom and experimental dynamic memory allocator `Hall
 
 As mentioned above, the library is experimental in its nature and hence was not written to be completely portable. However, it's expected to work in most common Linux distros (e.g. Ubuntu) and macOS. Library uses C11 standard.
 
-Main build target is the halloc library which would be a static library with the .a suffix at the end of build process.
+Main build target is the halloc library which will be at the end of build process a static library with the .a suffix.
 
 Build the library and run tests with the following command in a shell
 
@@ -24,7 +24,7 @@ In case of build failure or tests not passing, this library may not be usable in
 
 Header file `halloc.h` defines public APIs for the library. Use `halloc()` to request new memory allocation and `hfree()` to deallocate this memory. In addition, there are three functions to provide detailed memory statistics for total or type specific memory usage.
 
-Following code section gives an example use case of the halloc library. The code snippet illustrates functionality that makes the library interesting, e.g. the mentioned availability of few virtual memory usage statistics, each beginning with the "halloc_print" prefix.
+Following code section gives an example use case of the halloc library. The code snippet illustrates functionality that makes the library interesting, e.g. the mentioned possibility to inspect virtual memory usage statistics via three different functions, each beginning with the "halloc_print" prefix.
 
 ```C
 #include <stdlib.h>
@@ -45,7 +45,7 @@ int main() {
   assert(p != NULL);
 
   p->size = 25;
-  // allocate double typed pointer
+  // allocate double type pointer
   p->data = halloc(double, p->size);
 
   assert(p->data != NULL);
