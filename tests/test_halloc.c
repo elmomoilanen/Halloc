@@ -68,6 +68,41 @@ static void test_allocation_primitive_type_with_space()
 }
 
 
+static void test_allocation_for_too_large_struct_name()
+{
+    typedef struct {
+        char name[25];
+        i32 x;
+    } ToooLongStructTypeNameToBeValidAndForCurrentHallocImplementation;
+
+    ToooLongStructTypeNameToBeValidAndForCurrentHallocImplementation *type_ptr =\
+        halloc(ToooLongStructTypeNameToBeValidAndForCurrentHallocImplementation, 1);
+
+    assert(type_ptr == NULL);
+
+    PRINT_SUCCESS(__func__);
+}
+
+
+static void test_allocation_large_struct_name()
+{
+    typedef struct {
+        char name[25];
+        i32 x;
+    } LoongStructTypeNameButOkToBeValidForCurrentHallocImplementation;
+
+    LoongStructTypeNameButOkToBeValidForCurrentHallocImplementation *type_ptr =\
+        halloc(LoongStructTypeNameButOkToBeValidForCurrentHallocImplementation, 1);
+
+    assert(type_ptr != NULL);
+    assert(type_ptr->x == 0);
+
+    hfree(type_ptr);
+
+    PRINT_SUCCESS(__func__);
+}
+
+
 static void test_allocation_small()
 {
     product *p = halloc(product, 1);
@@ -225,6 +260,8 @@ test_func halloc_tests[] = {
     {"allocation_primitive_type_small", test_allocation_primitive_type_small},
     {"allocation_primitive_type_large", test_allocation_primitive_type_large},
     {"allocation_primitive_type_with_space", test_allocation_primitive_type_with_space},
+    {"allocation_for_too_large_struct_name", test_allocation_for_too_large_struct_name},
+    {"allocation_large_struct_name", test_allocation_large_struct_name},
     {"allocation_small", test_allocation_small},
     {"allocation_small_other", test_allocation_small_other},
     {"allocation_medium", test_allocation_medium},
