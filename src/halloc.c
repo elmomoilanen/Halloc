@@ -6,13 +6,6 @@
 #include "halloc.h"
 
 
-/*
-Do not increase the `MAX_PAGE_UNITS` unless taking care of necessary modifications.
-Assumption is that for one allocation, required memory bytes are less that 2^32 - 1.
-*/
-static size_t MAX_PAGE_UNITS = 262145;
-
-
 void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
 {
     if(units < 1) {
@@ -30,7 +23,8 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
     }
 
     _set_system_page_size();
-    uint32_t const max_mem = _get_page_max_available_memory(MAX_PAGE_UNITS);
+    uint32_t const max_page_units = _get_max_page_units();
+    uint32_t const max_mem = _get_page_max_available_memory(max_page_units);
 
     if (max_mem == 0) {
         fprintf(stderr, "%s(): new page maximal available memory equals zero.\n", __func__);

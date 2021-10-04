@@ -24,12 +24,13 @@ typedef struct test_z_ {
     u32 values[1024];    
 } test_z;
 
-// same limit as in halloc.c
-static size_t MAX_PAGE_UNITS = 262145;
+
+static size_t MAX_PAGE_UNITS = 0;
 
 void init_memtools_testing()
 {
     _set_system_page_size();
+    MAX_PAGE_UNITS = _get_max_page_units();
 } 
 
 
@@ -143,6 +144,8 @@ static void test_free_data_block_allocation_medium_size()
 
     u32 const system_page_size = _get_system_page_size();
     u32 const request_count = 1000;
+
+    assert(MAX_PAGE_UNITS > 0);
 
     if(page_item->struct_size * request_count > _get_page_max_available_memory(MAX_PAGE_UNITS)) assert(0);
 

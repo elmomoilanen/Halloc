@@ -13,6 +13,7 @@
 
 
 static size_t SYSTEM_PAGE_SIZE = 0;
+static size_t MAX_PAGE_UNITS = 0;
 static vm_page_item_container_t *first_vm_page_item_container = NULL;
 
 void _set_system_page_size()
@@ -31,6 +32,7 @@ void _set_system_page_size()
     }
 
     SYSTEM_PAGE_SIZE = page_size;
+    MAX_PAGE_UNITS = MAX_SINGLE_PAGE_SIZE_BYTES / SYSTEM_PAGE_SIZE;
 }
 
 size_t _get_page_max_available_memory(size_t units)
@@ -50,6 +52,11 @@ size_t _get_max_page_items_per_page_container()
 size_t _get_system_page_size()
 {
     return SYSTEM_PAGE_SIZE;
+}
+
+size_t _get_max_page_units()
+{
+    return MAX_PAGE_UNITS;
 }
 
 static void* _create_memory_mapping(size_t units)

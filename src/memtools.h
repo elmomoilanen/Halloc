@@ -10,6 +10,7 @@
 
 #define MAX_STRUCT_NAME_SIZE 64
 #define SYS_MIN_PAGE_SIZE 4096
+#define MAX_SINGLE_PAGE_SIZE_BYTES 1073741824 // must be under 2^32 - 1
 
 typedef bool bool_t;
 
@@ -98,6 +99,7 @@ void _set_system_page_size();
 size_t _get_page_max_available_memory(size_t units);
 size_t _get_max_page_items_per_page_container();
 size_t _get_system_page_size();
+size_t _get_max_page_units();
 
 vm_page_item_t* _lookup_page_item(const char *struct_name);
 void _register_page_item(const char *struct_name, uint32_t struct_size);
