@@ -24,6 +24,13 @@ Params:
 Returns:
     pointer to starting address of requested memory if allocation succeeded,
     NULL-pointer otherwise.
+
+Examples:
+    following cases are valid calls for the halloc:
+    1) halloc(typeX, 1), where `typeX` is a type defined with typedef keyword
+    2) halloc(double, 1)
+    3) halloc(unsigned int, 1)
+    4) halloc(struct StructName, 1)
 */
 
 #define halloc(struct, units) (_halloc(#struct, sizeof(struct), units))
