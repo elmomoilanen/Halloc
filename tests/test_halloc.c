@@ -68,6 +68,24 @@ static void test_allocation_primitive_type_with_space()
 }
 
 
+static void test_allocation_struct_type()
+{
+    u32 const alloc_count = 1;
+
+    struct TestStruct {
+        u32 values[10];
+        char content[25];
+    };
+
+    struct TestStruct *ptr = halloc(struct TestStruct, alloc_count);
+    assert(ptr != NULL);
+
+    hfree(ptr);
+
+    PRINT_SUCCESS(__func__);
+}
+
+
 static void test_allocation_for_too_large_struct_name()
 {
     typedef struct {
@@ -260,6 +278,7 @@ test_func halloc_tests[] = {
     {"allocation_primitive_type_small", test_allocation_primitive_type_small},
     {"allocation_primitive_type_large", test_allocation_primitive_type_large},
     {"allocation_primitive_type_with_space", test_allocation_primitive_type_with_space},
+    {"allocation_struct_type", test_allocation_struct_type},
     {"allocation_for_too_large_struct_name", test_allocation_for_too_large_struct_name},
     {"allocation_large_struct_name", test_allocation_large_struct_name},
     {"allocation_small", test_allocation_small},
