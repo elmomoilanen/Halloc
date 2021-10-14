@@ -16,7 +16,7 @@ Build the library and run tests with the following command in a shell
 make && make test && make clean
 ```
 
-which on success places the static library file `libhalloc.a` in top-level of this library folder structure. The last clean command removes unneeded objective and test files. Notice that for macOS one might need to override the compiler setting from the Makefile which is gcc by default.
+which on success places the static library file `libhalloc.a` in top-level of this library folder structure. The last clean command removes unneeded object and test files. Notice that for macOS one might need to override the compiler setting from the Makefile which is gcc by default or give an additional argument `CC=clang` for the first make in the illustrated shell command above.
 
 In case of build failure or tests not passing, this library may not be usable in your system "as is".
 
