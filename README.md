@@ -2,15 +2,15 @@
 
 [![main](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml/badge.svg)](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml)
 
-This library implements a custom and experimental dynamic memory allocator `Halloc` in C language that somewhat resembles the C standard library function *calloc* by its public APIs. Halloc is constructed internally by doubly linked lists and uses *mmap* to create memory mappings in the virtual address space such that the mappings are anonymous and not backed by any files. For successful mappings, halloc returns a pointer to the starting address of the new memory allocation such that all bytes of the allocation are initialised to zero. One-time memory allocations of halloc are supported roughly up to 1 GiB by variating the length of mmap's memory mappings. Halloc library provides various memory statistics to be used alongside its main components that allocate and deallocate memory. Notice that this library is not thread-safe and thus should not be used with multi-threaded code.
+This library implements a custom dynamic memory allocator `Halloc` in the C language that somewhat resembles the standard library function *calloc* by its public APIs. Halloc is constructed internally by doubly linked lists and uses *mmap* (C standard library wrapper to the actual system call) to create memory mappings in the virtual address space such that the mappings are anonymous and not backed by any files. For successfully created mappings, halloc returns a pointer to the starting address of the new memory allocation such that all bytes of the allocation are initialised to zero. One-time memory allocations of halloc are supported roughly up to 1 GiB by variating internally the length of mmap's memory mappings. Halloc library provides various memory statistics to be used alongside its main components that allocate and deallocate memory, see the **Usage** section for an example. Notice that this library is not thread-safe and thus should not be used with multi-threaded code.
 
 ## Build ##
 
-As mentioned above, the library is experimental in its nature and hence was not written to be completely portable. However, it's expected to work in most common Linux distros (e.g. Ubuntu) and macOS. Library uses C11 standard.
+Library is experimental in its nature and hence was not written to be completely portable. However, it's expected to work in most common Linux distros (e.g. Ubuntu) and macOS. Library uses C11 standard.
 
 Main build target is the halloc library which will be at the end of build process a static library with the .a suffix.
 
-Build the library and run tests with the following command in a shell
+Build the library and run associated unit/functional tests with the following command in a shell
 
 ```bash
 make && make test && make clean
@@ -65,10 +65,10 @@ int main() {
 }
 ```
 
-When using halloc library in your C program, remember to indicate the compiler the include path (-I) for the header file *halloc.h* and library path (-L) and name (-l) for the static library file *libhalloc.a*. E.g. a shell command
+When using halloc library in other C program, remember to indicate the compiler the include path (-I) for the header file *halloc.h* and library path (-L) and name (-l) for the static library file *libhalloc.a*. E.g. a shell command
 
 ```bash
 gcc test_prog.c -Iinclude -L. -lhalloc -o test_prog -Wall -Wextra -Werror -std=c11 -g
 ```
 
-would compile a *test_prog.c* source code file placed in root directory of the halloc library.
+would compile a *test_prog.c* source code file placed in the root directory of the halloc library with common warning flags (e.g. Wall).
