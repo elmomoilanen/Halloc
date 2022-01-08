@@ -106,7 +106,9 @@ static void _register_page_item_to_first_container(char const *struct_name, uint
     if (first_vm_page_item_container == NULL) return;
     first_vm_page_item_container->next = NULL;
 
+    // safe, '\0' fits into dest char array but ensure it anyway
     strncpy(first_vm_page_item_container->vm_page_items->struct_name, struct_name, MAX_STRUCT_NAME_SIZE);
+    first_vm_page_item_container->vm_page_items->struct_name[MAX_STRUCT_NAME_SIZE - 1] = '\0';
 
     first_vm_page_item_container->vm_page_items->struct_size = struct_size;
     first_vm_page_item_container->vm_page_items->first_page = NULL;
@@ -141,7 +143,10 @@ void _register_page_item(char const *struct_name, uint32_t struct_size) {
         vm_page_item = first_vm_page_item_container->vm_page_items;
     }
 
+    // safe, '\0' fits into dest char array but ensure it anyway
     strncpy(vm_page_item->struct_name, struct_name, MAX_STRUCT_NAME_SIZE);
+    vm_page_item->struct_name[MAX_STRUCT_NAME_SIZE - 1] = '\0';
+
     vm_page_item->struct_size = struct_size;
     vm_page_item->first_page = NULL;
 
