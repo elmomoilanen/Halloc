@@ -1,3 +1,6 @@
+/*
+ * APIs for internal memory allocation tools.
+*/
 #ifndef __MEMTOOLS__
 #define __MEMTOOLS__
 
@@ -60,35 +63,34 @@ typedef struct vm_page_item_container_ {
 #define MAX_PAGE_ITEMS_PER_PAGE_CONTAINER ((SYSTEM_PAGE_SIZE - sizeof(vm_page_item_container_t *)) / sizeof(vm_page_item_t))
 
 
-#define TRAVERSE_PAGE_CONTAINERS_BEGIN(vm_page_item_container)  \
-{   \
-    vm_page_item_container_t *_vm_page_item_container = NULL;   \
-    for(; vm_page_item_container != NULL; vm_page_item_container = _vm_page_item_container){    \
+#define TRAVERSE_PAGE_CONTAINERS_BEGIN(vm_page_item_container)      \
+{                                                                   \
+    vm_page_item_container_t *_vm_page_item_container = NULL;       \
+    for(; vm_page_item_container != NULL;                           \
+          vm_page_item_container = _vm_page_item_container) {       \
         _vm_page_item_container = vm_page_item_container->next;
 
 #define TRAVERSE_PAGE_CONTAINERS_END(vm_page_item_container) }}
 
-
-#define TRAVERSE_PAGE_ITEMS_BEGIN(vm_page_item) \
-{   \
-    size_t count = 0;   \
-    for(; count < MAX_PAGE_ITEMS_PER_PAGE_CONTAINER && vm_page_item->struct_size; vm_page_item++, count++){
+#define TRAVERSE_PAGE_ITEMS_BEGIN(vm_page_item)                 \
+{                                                               \
+    size_t count = 0;                                           \
+    for(; count < MAX_PAGE_ITEMS_PER_PAGE_CONTAINER &&          \
+          vm_page_item->struct_size; vm_page_item++, count++){
 
 #define TRAVERSE_PAGE_ITEMS_END(vm_page_item) }}
 
-
-#define TRAVERSE_PAGES_BEGIN(vm_page)   \
-{   \
-    vm_page_t *_vm_page = NULL; \
+#define TRAVERSE_PAGES_BEGIN(vm_page)           \
+{                                               \
+    vm_page_t *_vm_page = NULL;                 \
     for(; vm_page != NULL; vm_page = _vm_page){ \
         _vm_page = vm_page->next;
 
 #define TRAVERSE_PAGES_END(vm_page) }}
 
-
-#define TRAVERSE_META_BLOCKS_IN_PAGE_BEGIN(meta_block)  \
-{   \
-    meta_block_t *_meta_block = NULL;   \
+#define TRAVERSE_META_BLOCKS_IN_PAGE_BEGIN(meta_block)      \
+{                                                           \
+    meta_block_t *_meta_block = NULL;                       \
     for(; meta_block != NULL; meta_block = _meta_block){    \
         _meta_block = meta_block->next;
 
@@ -101,15 +103,15 @@ size_t _get_max_page_items_per_page_container();
 size_t _get_system_page_size();
 size_t _get_max_page_units();
 
-vm_page_item_t* _lookup_page_item(const char *struct_name);
-void _register_page_item(const char *struct_name, uint32_t struct_size);
+vm_page_item_t* _lookup_page_item(char const *struct_name);
+void _register_page_item(char const *struct_name, uint32_t struct_size);
 
 meta_block_t* _allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t alloc_size);
 void _free_data_blocks(meta_block_t *meta_block);
 
 void _walk_vm_page_items();
 void _print_memory_usage();
-void _walk_vm_pages(const char *struct_name);
+void _walk_vm_pages(char const *struct_name);
 
 
 #endif /* __MEMTOOLS__ */
