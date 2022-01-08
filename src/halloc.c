@@ -6,8 +6,7 @@
 #include "halloc.h"
 
 
-void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
-{
+void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
     if(units < 1) {
         fprintf(stderr, "%s(): minimum allocation units equals 1.\n", __func__);
         return NULL;
@@ -61,8 +60,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units)
 }
 
 
-void _hfree(void* data)
-{
+void _hfree(void* data) {
     if(data == NULL) return;
 
     meta_block_t *meta_block = (meta_block_t *)((char *)data - sizeof(meta_block_t));
@@ -71,22 +69,19 @@ void _hfree(void* data)
 }
 
 
-void _print_saved_page_items()
-{
+inline void _print_saved_page_items() {
     printf("currently saved virtual memory page items...\n");
     _walk_vm_page_items();
 }
 
 
-void _print_total_memory_usage()
-{
+inline void _print_total_memory_usage() {
     printf("showing total memory usage by halloc...\n");
     _print_memory_usage();
 }
 
 
-void _print_type_memory_usage(char *struct_name)
-{
+inline void _print_type_memory_usage(char *struct_name) {
     printf("showing detailed memory usage for type %s...\n\n", struct_name);
     _walk_vm_pages(struct_name);
 }

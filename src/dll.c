@@ -56,15 +56,13 @@ void _unlink_node(dll_node_t *node) {
             node->next->prev = NULL;
             node->next = NULL;
         }
-    }
-    else {
+    } else {
         if(node->next) {
             node->next->prev = node->prev;
             node->prev->next = node->next;
             node->prev = NULL;
             node->next = NULL;
-        }
-        else {
+        } else {
             node->prev->next = NULL;
             node->prev = NULL;
         }
