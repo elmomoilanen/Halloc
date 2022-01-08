@@ -81,7 +81,7 @@ static void test_page_item_registration_for_multiple()
     i32 const max_reg_number = max_containers_per_page + 25;
     for(i32 j=1; j<=max_reg_number; ++j)
     {
-        char name[12];
+        char name[20];
         snprintf(name, sizeof name, "%s_%d", "test", j);
         
         _register_page_item(name, sizeof(test_x));
@@ -92,7 +92,7 @@ static void test_page_item_registration_for_multiple()
     assert(page_item != NULL);
     assert(page_item->struct_size == sizeof(test_x));
 
-    char last_name[12];
+    char last_name[20];
     snprintf(last_name, sizeof last_name, "%s_%d", "test", max_reg_number);
 
     page_item = _lookup_page_item(last_name);
