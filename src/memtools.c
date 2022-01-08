@@ -42,15 +42,15 @@ size_t _get_page_max_available_memory(size_t units) {
     ) ? total_page_size - GET_FIELD_OFFSET(vm_page_t, page_memory) : 0;
 }
 
-inline size_t _get_max_page_items_per_page_container() {
+size_t _get_max_page_items_per_page_container() {
     return MAX_PAGE_ITEMS_PER_PAGE_CONTAINER;
 }
 
-inline size_t _get_system_page_size() {
+size_t _get_system_page_size() {
     return SYSTEM_PAGE_SIZE;
 }
 
-inline size_t _get_max_page_units() {
+size_t _get_max_page_units() {
     return MAX_PAGE_UNITS;
 }
 

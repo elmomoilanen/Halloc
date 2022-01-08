@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -Werror -std=c11 -g
+CFLAGS=-Wall -Wextra -Werror -std=c11 -g -O2
 
 SRC=src/dll.c src/memtools.c src/halloc.c
 OBJS=dll.o memtools.o halloc.o
