@@ -53,7 +53,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
 
     if(free_meta_block != NULL) {
         memset((char *)(free_meta_block + 1), 0, free_meta_block->block_size);
-        return (void *)(free_meta_block + 1);
+        return free_meta_block + 1; // starting address of the free data block
     }
 
     return NULL;
