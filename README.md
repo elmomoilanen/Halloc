@@ -6,7 +6,7 @@ This library implements a custom dynamic memory allocator `Halloc` in the C lang
 
 ## Build ##
 
-Library is experimental in its nature and hence was not written to be completely portable. However, it's expected to work in most common Linux distros (e.g. Ubuntu) and macOS. Library uses C11 standard.
+Library is experimental in its nature and hence was not written to be completely portable. However, it's expected to work in most common Linux distros (e.g. Ubuntu) and macOS with Intel processors. Library uses C11 standard.
 
 Main build target is the halloc library which will be at the end of build process a static library with the .a suffix.
 
