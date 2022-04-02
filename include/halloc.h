@@ -16,7 +16,7 @@ void _print_type_memory_usage(char *struct_name);
 /*
 halloc public user API.
 
-Halloc allocates requested memory in a `calloc`-like manner.
+Halloc allocates requested memory in `calloc`-like manner.
 
 Params:
     struct (type of the struct, can be also directly one of the primitive types, e.g. double)
@@ -39,10 +39,17 @@ Examples:
 /*
 hfree public user API.
 
-Hfree deallocates previously allocated memory.
+Hfree deallocates memory previously allocated by halloc.
 
 Params:
-    pointer to the starting address of allocated data
+    pointer to the starting address of allocated data.
+
+Examples:
+    // allocate 5 units of typeX which is now a type defined with typedef keyword
+    ptr = halloc(typeX, 5)
+    // if ptr != NULL, do something with it...
+    // deallocate memory with hfree
+    hfree(ptr)
 */
 
 #define hfree(data) (_hfree(data))
