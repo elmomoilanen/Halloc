@@ -52,7 +52,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
     meta_block_t *free_meta_block = _allocate_free_data_block(vm_page_item, units * vm_page_item->struct_size);
 
     if(free_meta_block != NULL) {
-        memset((char *)(free_meta_block + 1), 0, free_meta_block->block_size);
+        memset(free_meta_block + 1, 0, free_meta_block->block_size);
         return free_meta_block + 1; // starting address of the free data block
     }
 
