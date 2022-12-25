@@ -4,7 +4,6 @@
 #include "memtools.h"
 #include "halloc.h"
 
-
 typedef struct {
     char name[256];
     u32 year;
@@ -23,8 +22,7 @@ typedef struct {
 } typeX;
 
 
-static void test_allocation_primitive_type_small()
-{
+static void test_allocation_primitive_type_small() {
     u32 const alloc_count = 25;
 
     i32 *ptr = halloc(i32, alloc_count);
@@ -38,9 +36,7 @@ static void test_allocation_primitive_type_small()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_allocation_primitive_type_large()
-{
+static void test_allocation_primitive_type_large() {
     u32 const alloc_count = 10000;
 
     i32 *ptr = halloc(i32, alloc_count);
@@ -54,9 +50,7 @@ static void test_allocation_primitive_type_large()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_allocation_primitive_type_with_space()
-{
+static void test_allocation_primitive_type_with_space() {
     u32 const alloc_count = 1;
 
     unsigned int *ptr = halloc(unsigned int, alloc_count);
@@ -67,9 +61,7 @@ static void test_allocation_primitive_type_with_space()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_allocation_struct_type()
-{
+static void test_allocation_struct_type() {
     u32 const alloc_count = 1;
 
     struct TestStruct {
@@ -85,9 +77,7 @@ static void test_allocation_struct_type()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_allocation_for_too_large_struct_name()
-{
+static void test_allocation_for_too_large_struct_name() {
     typedef struct {
         char name[25];
         i32 x;
@@ -101,9 +91,7 @@ static void test_allocation_for_too_large_struct_name()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_allocation_large_struct_name()
-{
+static void test_allocation_large_struct_name() {
     typedef struct {
         char name[25];
         i32 x;
@@ -120,9 +108,7 @@ static void test_allocation_large_struct_name()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_allocation_small()
-{
+static void test_allocation_small() {
     product *p = halloc(product, 1);
 
     assert(p != NULL);
@@ -133,9 +119,7 @@ static void test_allocation_small()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_allocation_small_other()
-{
+static void test_allocation_small_other() {
     u32 const alloc_count = 25;
 
     product *p = halloc(product, alloc_count);
@@ -154,9 +138,7 @@ static void test_allocation_small_other()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_allocation_medium()
-{
+static void test_allocation_medium() {
     u32 const alloc_count = 100;
 
     product *p = halloc(product, alloc_count);
@@ -174,9 +156,7 @@ static void test_allocation_medium()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_allocation_large()
-{
+static void test_allocation_large() {
     u32 const alloc_count = 10000;
 
     product *p = halloc(product, alloc_count);
@@ -194,9 +174,7 @@ static void test_allocation_large()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_allocation_huge()
-{
+static void test_allocation_huge() {
     u32 const alloc_count = 500000;
 
     product *p = halloc(product, alloc_count);
@@ -221,9 +199,7 @@ static void test_allocation_huge()
 
 }
 
-
-static void test_allocation_oversize()
-{
+static void test_allocation_oversize() {
     u32 const alloc_count = 50000000;
 
     product *p = halloc(product, alloc_count);
@@ -234,9 +210,7 @@ static void test_allocation_oversize()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_nested_allocation()
-{
+static void test_nested_allocation() {
     typeA *typeA = halloc(typeA, 1);
     assert(typeA != NULL);
     assert(typeA->data == 0);
@@ -255,9 +229,7 @@ static void test_nested_allocation()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_readme_example_allocation()
-{
+static void test_readme_example_allocation() {
     typeX *p = halloc(typeX, 1);
     assert(p != NULL);
     
@@ -272,7 +244,6 @@ static void test_readme_example_allocation()
 
     PRINT_SUCCESS(__func__);
 }
-
 
 test_func halloc_tests[] = {
     {"allocation_primitive_type_small", test_allocation_primitive_type_small},

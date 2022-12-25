@@ -2,7 +2,6 @@
 
 #include "dll.h"
 
-
 typedef struct {
     u64 x, x2;
     char n[32];
@@ -11,8 +10,7 @@ typedef struct {
 } test_type_t;
 
 
-static int16_t test_type_comparer(void *left, void *right)
-{
+static int16_t test_type_comparer(void *left, void *right) {
     dll_node_t *left_node = left;
     dll_node_t *right_node = right;
 
@@ -25,16 +23,12 @@ static int16_t test_type_comparer(void *left, void *right)
     return 1;
 }
 
-
-static int16_t test_type_comparer_(void *left, void *right)
-{
+static int16_t test_type_comparer_(void *left, void *right) {
     if( ((test_type_t *)left)->x > ((test_type_t *)right)->x ) return -1;
     return 1;
 }
 
-
-static void test_offset_macro()
-{
+static void test_offset_macro() {
     assert(GET_ITEM_OFFSET(test_type_t, x) == 0);
     assert(GET_ITEM_OFFSET(test_type_t, x2) == 8);
     assert(GET_ITEM_OFFSET(test_type_t, n) == 16);
@@ -44,9 +38,7 @@ static void test_offset_macro()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_data_offset_macro()
-{
+static void test_data_offset_macro() {
     test_type_t test_struct = {0};
     test_struct.x = 1;
 
@@ -63,9 +55,7 @@ static void test_data_offset_macro()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_node_pushing()
-{
+static void test_node_pushing() {
     test_type_t test_struct = {0}, test_struct2 = {0};
     test_struct.x = 1;
     test_struct2.x = 2;
@@ -89,9 +79,7 @@ static void test_node_pushing()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_traverse_forward_macro()
-{
+static void test_traverse_forward_macro() {
     u32 n_structs = 3, node_counter = 0;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
 
@@ -114,9 +102,7 @@ static void test_traverse_forward_macro()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_data_offset_macro_multiple_nodes()
-{
+static void test_data_offset_macro_multiple_nodes() {
     u32 const structs = 3;
     test_type_t *test_structs = calloc(structs, sizeof *test_structs); 
 
@@ -149,9 +135,7 @@ static void test_data_offset_macro_multiple_nodes()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_traverse_backward_macro()
-{
+static void test_traverse_backward_macro() {
     u32 n_structs = 5, node_counter = 0;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
 
@@ -191,9 +175,7 @@ static void test_traverse_backward_macro()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_node_appending()
-{
+static void test_node_appending() {
     u32 const n_structs = 4;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
 
@@ -225,9 +207,7 @@ static void test_node_appending()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_adding_node_after()
-{
+static void test_adding_node_after() {
     test_type_t test_struct = {0};
     test_struct.x = 1;
     _init_node(&test_struct.node);
@@ -266,9 +246,7 @@ static void test_adding_node_after()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_adding_node_before()
-{
+static void test_adding_node_before() {
     test_type_t ts = {0};
     ts.x2 = 5;
     _init_node(&ts.node);
@@ -301,9 +279,7 @@ static void test_adding_node_before()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_unlinking_node()
-{
+static void test_unlinking_node() {
     u32 const n_structs = 3;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
 
@@ -334,9 +310,7 @@ static void test_unlinking_node()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_removal_of_node()
-{
+static void test_removal_of_node() {
     u32 const n_structs = 5;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
 
@@ -374,9 +348,7 @@ static void test_removal_of_node()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_adding_and_removal_of_nodes()
-{
+static void test_adding_and_removal_of_nodes() {
     u32 const n_structs = 10;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
 
@@ -424,9 +396,7 @@ static void test_adding_and_removal_of_nodes()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_dll_sorting()
-{
+static void test_dll_sorting() {
     u32 const n_structs = 7;
     test_type_t *test_structs = calloc(n_structs, sizeof *test_structs);
 
@@ -468,9 +438,7 @@ static void test_dll_sorting()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_priority_queue()
-{
+static void test_priority_queue() {
     test_type_t tstructs[4] = {{0}};
     tstructs[0].x = 2;
     tstructs[1].x = 11;
@@ -505,7 +473,6 @@ static void test_priority_queue()
 
     PRINT_SUCCESS(__func__);
 }
-
 
 test_func dll_tests[] = {
     {"offset_macro", test_offset_macro},

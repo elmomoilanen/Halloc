@@ -3,7 +3,6 @@
 #include "dll.h"
 #include "memtools.h"
 
-
 typedef struct {
     char header[32];
     char code[64];
@@ -27,15 +26,12 @@ typedef struct test_z_ {
 
 static size_t MAX_PAGE_UNITS = 0;
 
-void init_memtools_testing()
-{
+void init_memtools_testing() {
     _set_system_page_size();
     MAX_PAGE_UNITS = _get_max_page_units();
 } 
 
-
-static void test_page_item_registration()
-{
+static void test_page_item_registration() {
     const char *struct_name = "test_x1";
 
     vm_page_item_t *page_item = _lookup_page_item(struct_name);
@@ -52,9 +48,7 @@ static void test_page_item_registration()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_page_item_registration_for_few()
-{
+static void test_page_item_registration_for_few() {
     vm_page_item_t *page_item = _lookup_page_item("test_x2");
     assert(page_item == NULL);
 
@@ -71,9 +65,7 @@ static void test_page_item_registration_for_few()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_page_item_registration_for_multiple()
-{
+static void test_page_item_registration_for_multiple() {
     uint32_t const max_containers_per_page = _get_max_page_items_per_page_container();
 
     assert(max_containers_per_page > 0);
@@ -103,9 +95,7 @@ static void test_page_item_registration_for_multiple()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_free_data_block_allocation_small_size()
-{
+static void test_free_data_block_allocation_small_size() {
     const char *struct_name = "test_x";
 
     _register_page_item("test_x", sizeof(test_x));
@@ -132,9 +122,7 @@ static void test_free_data_block_allocation_small_size()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_free_data_block_allocation_medium_size()
-{
+static void test_free_data_block_allocation_medium_size() {
     const char *struct_name = "test_y";
 
     _register_page_item("test_y", sizeof(test_y));
@@ -166,9 +154,7 @@ static void test_free_data_block_allocation_medium_size()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_free_data_block_allocation_large_size()
-{
+static void test_free_data_block_allocation_large_size() {
     const char *struct_name = "test_z";
 
     _register_page_item("test_z", sizeof(test_z));
@@ -198,9 +184,7 @@ static void test_free_data_block_allocation_large_size()
     PRINT_SUCCESS(__func__);
 }
 
-
-static void test_free_data_block_allocation_for_consecutive_times()
-{
+static void test_free_data_block_allocation_for_consecutive_times() {
     const char *struct_name = "test_xx";
 
     _register_page_item("test_xx", sizeof(test_x));
@@ -247,7 +231,6 @@ static void test_free_data_block_allocation_for_consecutive_times()
 
     PRINT_SUCCESS(__func__);
 }
-
 
 test_func memtools_tests[] = {
     {"page_item_registration", test_page_item_registration},
