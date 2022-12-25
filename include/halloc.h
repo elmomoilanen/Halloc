@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <stddef.h>
 
-
 void* _halloc(char *struct_name, uint32_t struct_size, size_t units);
 void _hfree(void* data);
 
@@ -12,9 +11,8 @@ void _print_saved_page_items();
 void _print_total_memory_usage();
 void _print_type_memory_usage(char *struct_name);
 
-
 /*
-halloc public user API.
+Halloc public user API.
 
 Halloc allocates requested memory in `calloc`-like manner.
 
@@ -35,9 +33,8 @@ Examples:
 
 #define halloc(struct, units) (_halloc(#struct, sizeof(struct), units))
 
-
 /*
-hfree public user API.
+Halloc free public user API.
 
 Hfree deallocates memory previously allocated by halloc.
 
@@ -53,7 +50,6 @@ Examples:
 */
 
 #define hfree(data) (_hfree(data))
-
 
 /*
 Memory statistics public user APIs.

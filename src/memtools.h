@@ -10,7 +10,6 @@
 
 #include "dll.h"
 
-
 #define MAX_STRUCT_NAME_SIZE 64
 #define SYS_MIN_PAGE_SIZE 4096
 #define MAX_SINGLE_PAGE_SIZE_BYTES 1073741824 // must be under 2^32 - 1
@@ -96,7 +95,6 @@ typedef struct vm_page_item_container_ {
 
 #define TRAVERSE_META_BLOCKS_IN_PAGE_END(meta_block) }}
 
-
 void _set_system_page_size();
 size_t _get_page_max_available_memory(size_t units);
 size_t _get_max_page_items_per_page_container();
@@ -112,6 +110,5 @@ void _free_data_blocks(meta_block_t *meta_block);
 void _walk_vm_page_items();
 void _print_memory_usage();
 void _walk_vm_pages(char const *struct_name);
-
 
 #endif /* __MEMTOOLS__ */

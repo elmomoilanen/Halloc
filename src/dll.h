@@ -7,7 +7,6 @@
 #include <stdint.h>
 #include <stddef.h>
 
-
 typedef struct dll_node_ {
     struct dll_node_ *prev;
     struct dll_node_ *next;
@@ -19,7 +18,6 @@ typedef struct dll_ {
 } dll_t;
 
 typedef int16_t (*comp_func)(void *, void *);
-
 
 #define GET_DLL_DATA(dll_node, offset) ((void *)((char *)dll_node - offset))
 
@@ -55,6 +53,5 @@ void _remove_node(dll_t *dll, dll_node_t *node);
 void _add_to_priority_queue(dll_node_t *head, dll_node_t *new_node, uint32_t node_offset, comp_func func);
 
 dll_node_t* _msort(dll_node_t *head, comp_func func);
-
 
 #endif /* __DLL__ */
