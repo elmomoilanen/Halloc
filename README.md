@@ -6,7 +6,7 @@ This library implements a custom dynamic memory allocator `Halloc` in the C lang
 
 ## Build ##
 
-Library is expected to work in most common Linux distros (e.g. Ubuntu) and macOS with Intel processors. Library uses C11 standard.
+Library is expected to work in most common Linux distros (e.g. Ubuntu) and macOS with Intel processors. C11 standard is used.
 
 Build the library and run associated unit/functional tests with the following command in a shell
 
@@ -14,7 +14,7 @@ Build the library and run associated unit/functional tests with the following co
 make && make test && make clean
 ```
 
-which on success places the static library file *libhalloc.a* in top-level of this library folder structure. The last clean command removes unneeded object and test files. Notice that for macOS one might need to override the compiler parameter from the Makefile which is gcc by default or give an additional argument *CC=clang* after the first make in the shell command above.
+which on success places the static library file *libhalloc.a* in top-level of this library folder structure. The last clean command removes unneeded object and test files. Notice that for macOS one might need to override the compiler parameter from the Makefile which is *gcc* by default or give an additional argument *CC=clang* after the first make in the shell command above.
 
 In case of a build failure or tests not passing, this library may not be usable in your system "as is".
 
