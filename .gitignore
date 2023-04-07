@@ -1,6 +1,7 @@
 *.o
 *.a
-test_main
+
+halloc_test
+test_prog*
 
 .vscode
-test_prog.c
