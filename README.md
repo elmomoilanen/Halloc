@@ -4,7 +4,7 @@
 
 Welcome to `Halloc`, a custom dynamic memory allocator implemented in C. This library provides a public API that resembles the standard library function `calloc`. Halloc is built internally using doubly linked lists and leverages the `mmap` system call to create anonymous memory mappings in the virtual address space. Each memory allocation returned by Halloc is initialized to zero, ensuring a consistent and predictable initial state for new memory allocations.
 
-Library is designed to support the size of a single allocation up to approximately 1 GiB, achieved by adjusting the length of the memory mappings created by the mmap system call. Alongside the primary memory allocation and deallocation functions, the library also provides various memory statistics to be used. For more information, please refer to the *Usage* section below.
+Library is designed to support the size of a single allocation up to approximately 1 GiB, achieved by adjusting the length of the memory mappings created by the mmap system call. Alongside the primary memory allocation and deallocation functions, the library also provides various memory statistics to be used. For more information, please refer to the **Usage** section below.
 
 Be cautious when using this library with multithreaded code, as it has not been thoroughly tested in this manner.
 
@@ -36,7 +36,7 @@ This library is a bit experimental in its nature and hence in case of a build fa
 
 ## Usage ##
 
-Header file *include/halloc.h* defines the public API for the library.
+Header file **include/halloc.h** defines the public API for the library.
 
 Use `halloc()` to request a new memory allocation and `hfree()` to deallocate previously allocated memory. In addition, there are three functions to provide detailed memory statistics for total or type specific memory usage.
 
