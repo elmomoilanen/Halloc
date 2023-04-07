@@ -12,20 +12,18 @@ void _print_total_memory_usage();
 void _print_type_memory_usage(char *struct_name);
 
 /*
-Halloc public user API.
-
 Halloc allocates requested memory in `calloc`-like manner.
 
 Params:
-    struct (type of the struct, can be also directly one of the primitive types, e.g. double)
-    units (allocation count)
+    struct: type of the struct, can also be directly one of the primitive types, e.g. double
+    units: allocation count
 
 Returns:
-    pointer to the starting address of allocated memory if the allocation succeeded,
-    NULL-pointer otherwise.
+    void pointer or NULL: pointer to the starting address of the allocated memory if allocation succeeded,
+        NULL-pointer otherwise.
 
 Examples:
-    1) halloc(typeX, 1), where `typeX` is a type defined with typedef keyword
+    1) halloc(typeX, 1), where `typeX` is a type defined with the typedef keyword
     2) halloc(double, 1)
     3) halloc(unsigned int, 1)
     4) halloc(struct StructName, 1)
@@ -34,12 +32,10 @@ Examples:
 #define halloc(struct, units) (_halloc(#struct, sizeof(struct), units))
 
 /*
-Halloc free public user API.
-
-Hfree deallocates memory previously allocated by halloc.
+Hfree deallocates memory that has been previously allocated by halloc.
 
 Params:
-    pointer to the starting address of allocated data.
+    data: pointer to the starting address of the allocated data.
 
 Examples:
     // allocate 5 units of typeX which is now a type defined with typedef keyword
@@ -52,7 +48,7 @@ Examples:
 #define hfree(data) (_hfree(data))
 
 /*
-Memory statistics public user APIs.
+Memory statistics APIs.
 
 See currently saved page items (struct types), total memory usage by halloc or
 detailed memory footprint for a specific struct type.
