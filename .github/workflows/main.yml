@@ -1,13 +1,26 @@
 name: main
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
     name: Build process
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: make
-    - run: make test
-    - run: make clean
+    - uses: actions/checkout@v3
+    - name: Env setup
+      run: |
+        sudo apt update
+        sudo apt install valgrind
+    - name: Build
+      run: make
+    - name: Test
+      run: make test
+    - name: Memory check
+      run: |
+        valgrind --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all --quiet --error-exitcode=1 ./halloc_test
+    - name: Clean
+      run: make clean
