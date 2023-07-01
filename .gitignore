@@ -1,7 +1,4 @@
 *.o
 *.a
-
 halloc_test
 test_prog*
-
-.vscode
