@@ -1,13 +1,9 @@
 #ifndef __COMMON__
 #define __COMMON__
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <string.h>
-#include <assert.h>
 
 #define ANSI_COLOR_GREEN "\x1b[32m"
 #define ANSI_COLOR_RESET "\x1b[0m"

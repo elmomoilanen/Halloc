@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "common.h"
 
 static void run_dll_tests() {
