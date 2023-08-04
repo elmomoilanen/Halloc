@@ -79,7 +79,8 @@ void _add_to_priority_queue(
     dll_node_t *head,
     dll_node_t *new_node,
     uint32_t node_offset,
-    comp_func func) {
+    comp_func func)
+{
     // head->next is the first real node
     if(head->next == NULL && head->prev == NULL) {
         _add_node_after(head, new_node);
@@ -89,9 +90,9 @@ void _add_to_priority_queue(
     if(head->next == NULL) {
         // should never land here, if program logic ok
         fprintf(stderr,
-        "%s(): priority queue head next node NULL but prev node not NULL.\n",
-        __func__);
-
+            "%s(): Error: priority queue head next node NULL but prev node not NULL.\n",
+            __func__
+        );
         exit(EXIT_FAILURE);
     }
 
