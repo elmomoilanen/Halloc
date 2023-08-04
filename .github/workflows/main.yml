@@ -21,6 +21,7 @@ jobs:
       run: make test
     - name: Memory check
       run: |
-        valgrind --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all --quiet --error-exitcode=1 ./halloc_test
+        valgrind --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all \
+          --quiet --error-exitcode=1 ./halloc_test
     - name: Clean
       run: make clean
