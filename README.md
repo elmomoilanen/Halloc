@@ -6,7 +6,7 @@ Welcome to `Halloc`, a custom dynamic memory allocator implemented in C. This li
 
 Library is designed to support the size of a single allocation up to approximately 1 GiB, achieved by adjusting the length of the memory mappings created by the mmap system call. Alongside the primary memory allocation and deallocation functions, the library also provides various memory statistics to be used. For more information, please refer to the **Usage** section below.
 
-Be cautious when using this library with multithreaded code, as it has not been thoroughly tested in this manner.
+This library can only be used safely with single-threaded code.
 
 ## Build ##
 
@@ -32,7 +32,7 @@ To uninstall, run the command
 make uninstall
 ```
 
-This library is a bit experimental in its nature and hence in case of a build failure or tests not passing, the library may not be directly usable in your system.
+In case of a build failure or tests not passing, this library may not be directly usable in your system.
 
 ## Usage ##
 
