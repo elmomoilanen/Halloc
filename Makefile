@@ -17,7 +17,7 @@ TEST_TARGET=halloc_test
 
 .PHONY: all clean test install uninstall help
 
-all: $(TARGET) $(TEST_TARGET)
+all: $(TARGET) clean
 
 $(OBJ): %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -31,7 +31,7 @@ $(TEST_OBJ): %.o: %.c
 $(TEST_TARGET): $(OBJ) $(TEST_OBJ)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^
 
-test: $(TEST_TARGET)
+test: $(TEST_TARGET) clean
 	./$(TEST_TARGET)
 
 install: $(TARGET)
@@ -46,13 +46,13 @@ uninstall:
 	rm -rf $(PREFIX)/include/halloc/
 
 clean:
-	rm -f $(OBJ) $(TEST_OBJ) $(TEST_TARGET)
+	rm -f $(OBJ) $(TEST_OBJ)
 
 help:
-	@echo "Available targets:"
-	@echo "  all:           Build library and test executable"
-	@echo "  test:          Run test executable"
-	@echo "  install:       Install library and header files to system directories specified by PREFIX"
-	@echo "  uninstall:     Remove files installed by the 'install' target"
-	@echo "  clean:         Remove object files and test executable"
-	@echo "  help:          Display this help message"
+	@echo "Available targets:\n"
+	@echo "all:           Build library"
+	@echo "test:          Build and run test executable"
+	@echo "install:       Install library and header files to system directories specified by PREFIX"
+	@echo "uninstall:     Remove files installed by the 'install' target"
+	@echo "clean:         Remove all object files"
+	@echo "help:          Display this help message"
