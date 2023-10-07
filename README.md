@@ -2,7 +2,7 @@
 
 [![main](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml/badge.svg)](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml)
 
-Welcome to `Halloc`, a custom dynamic memory allocator implemented in C. This library provides a public API that resembles the standard library function `calloc`. Halloc is built internally using doubly linked lists and leverages the `mmap` system call to create anonymous memory mappings in the virtual address space. Each memory allocation returned by Halloc is initialized to zero, ensuring a consistent and predictable initial state for new memory allocations.
+`Halloc` is a custom dynamic memory allocator for C programs. This library provides a public API that resembles the standard library function `calloc`. Halloc is built internally using doubly linked lists and leverages the `mmap` system call to create anonymous memory mappings in the virtual address space. Each memory allocation returned by Halloc is initialized to zero, ensuring a consistent and predictable initial state for new memory allocations.
 
 Library is designed to support the size of a single allocation up to approximately 1 GiB, achieved by adjusting the length of the memory mappings created by the mmap system call. Alongside the primary memory allocation and deallocation functions, the library also provides various memory statistics to be used. For more information, please refer to the **Usage** section below.
 
@@ -10,23 +10,31 @@ This library can only be used safely with single-threaded code.
 
 ## Build ##
 
-The library is expected to work on most common Linux distros (e.g. Ubuntu). Library uses the C11 standard.
+This library uses the C11 standard. It is expected to work on most common Linux distros.
 
-To build the library, run unit tests, and clean up unneeded object files, run the following command
+To build the library, run
 
 ```bash
-make && make test && make clean
+make
 ```
 
 If the build is successful, a static library file named `libhalloc.a` will be created in the current directory.
 
-Optionally to the previous combined make command, the following command installs the library and header file in the system directories specified by the PREFIX variable, which defaults to /usr/local in the Makefile
+Unit tests can be run as follows
+
+```bash
+make test
+```
+
+and this should be used to verify that the library is usable on the target machine.
+
+Optionally to the previous make command, the following command installs the library and header file in the system directories specified by the PREFIX variable, which defaults to /usr/local in the Makefile
 
 ```bash
 make install
 ```
 
-To uninstall, run the command
+To uninstall, run
 
 ```bash
 make uninstall
