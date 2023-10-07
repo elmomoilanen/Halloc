@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -23,5 +26,3 @@ jobs:
       run: |
         valgrind --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all \
           --quiet --error-exitcode=1 ./halloc_test
-    - name: Clean
-      run: make clean
