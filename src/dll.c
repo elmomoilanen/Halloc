@@ -40,7 +40,7 @@ void _add_node_after(dll_node_t *node, dll_node_t *new_node) {
 }
 
 void _add_node_before(dll_node_t *node, dll_node_t *new_node) {
-    // not safe for head node, use push in that case
+    // Not safe for head node, use push in that case
     new_node->next = node;
     if(new_node->next->prev != NULL) {
         new_node->prev = new_node->next->prev;
@@ -50,7 +50,7 @@ void _add_node_before(dll_node_t *node, dll_node_t *new_node) {
 }
 
 void _unlink_node(dll_node_t *node) {
-    // not safe for head node, use remove_node in that case
+    // Not safe for head node, use remove_node in that case
     if(node->prev == NULL) {
         if(node->next) {
             node->next->prev = NULL;
@@ -74,7 +74,6 @@ void _remove_node(dll_t *dll, dll_node_t *node) {
     _unlink_node(node);
 }
 
-
 void _add_to_priority_queue(
     dll_node_t *head,
     dll_node_t *new_node,
@@ -88,7 +87,7 @@ void _add_to_priority_queue(
     }
 
     if(head->next == NULL) {
-        // should never land here, if program logic ok
+        // Should never land here, if program logic ok
         fprintf(stderr,
             "%s(): Error: priority queue head next node NULL but prev node not NULL.\n",
             __func__
@@ -97,7 +96,7 @@ void _add_to_priority_queue(
     }
 
     if(func(GET_DLL_DATA(new_node, node_offset), GET_DLL_DATA(head->next, node_offset)) < 0) {
-        // negative return value, lhs value is greater than rhs
+        // Negative return value, lhs value is greater than rhs
         _add_node_after(head, new_node);
         return;
     }
@@ -108,7 +107,7 @@ void _add_to_priority_queue(
     TRAVERSE_DLL_FORWARD_BEGIN(node)
     {
         if(func(GET_DLL_DATA(new_node, node_offset), GET_DLL_DATA(node, node_offset)) < 0) {
-            // negative return value, lhs value is greater than rhs
+            // Negative return value, lhs value is greater than rhs
             _add_node_before(node, new_node);
             return;
         }
@@ -118,7 +117,6 @@ void _add_to_priority_queue(
 
     _add_node_after(active_node, new_node);
 }
-
 
 static dll_node_t* _split_dll(dll_node_t *head) {
     dll_node_t *fast = head, *slow = head;

@@ -1,6 +1,3 @@
-/*
- * APIs for doubly linked list `dll_node_t`.
-*/
 #ifndef __DLL__
 #define __DLL__
 

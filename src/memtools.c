@@ -110,7 +110,7 @@ static void _register_page_item_to_first_container(char const *struct_name, uint
     }
     first_vm_page_item_container->next = NULL;
 
-    // safe, '\0' fits into dest char array but ensure it anyway
+    // Safety: '\0' fits into dest char array but ensure it anyway in the following
     strncpy(first_vm_page_item_container->vm_page_items->struct_name, struct_name, MAX_STRUCT_NAME_SIZE);
     first_vm_page_item_container->vm_page_items->struct_name[MAX_STRUCT_NAME_SIZE - 1] = '\0';
 
@@ -147,7 +147,7 @@ void _register_page_item(char const *struct_name, uint32_t struct_size) {
         vm_page_item = first_vm_page_item_container->vm_page_items;
     }
 
-    // safe, '\0' fits into dest char array but ensure it anyway
+    // Safety: '\0' fits into dest char array but ensure it anyway in the following
     strncpy(vm_page_item->struct_name, struct_name, MAX_STRUCT_NAME_SIZE);
     vm_page_item->struct_name[MAX_STRUCT_NAME_SIZE - 1] = '\0';
 
@@ -240,7 +240,7 @@ static bool_t _split_free_data_block_for_allocation(
 
     meta_block->is_free = false;
     meta_block->block_size = alloc_size;
-    // this is safe, node here is never a head node of the priority queue
+    // Safety: node here is never a head node of the priority queue
     _unlink_node(&meta_block->heap_node);
 
     if(remain_size < sizeof(meta_block_t)) {
@@ -269,7 +269,6 @@ static bool_t _split_free_data_block_for_allocation(
 
     return true;
 }
-
 
 meta_block_t* _allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t alloc_size) {
     meta_block_t *largest_free_meta_block = _get_largest_free_meta_block(vm_page_item);
@@ -329,7 +328,6 @@ static void _free_vm_page(vm_page_t *vm_page) {
     _delete_memory_mapping(vm_page, vm_page->system_page_count);
 }
 
-
 void _free_data_blocks(meta_block_t *meta_block) {
     meta_block_t *updated_lowest_meta_block = meta_block;
     vm_page_t *vm_page = GET_META_PAGE(meta_block, meta_block->offset);
@@ -371,7 +369,6 @@ void _free_data_blocks(meta_block_t *meta_block) {
     }
 }
 
-
 void _walk_vm_page_items() {
     vm_page_item_container_t *vm_page_item_container = first_vm_page_item_container;
     uint32_t page_counter = 0;
@@ -407,7 +404,6 @@ void _walk_vm_page_items() {
     }
     TRAVERSE_PAGE_CONTAINERS_END(vm_page_item_container);
 }
-
 
 void _print_memory_usage() {
     vm_page_item_container_t *vm_page_item_container = first_vm_page_item_container;
@@ -449,7 +445,6 @@ void _print_memory_usage() {
     TRAVERSE_PAGE_CONTAINERS_END(vm_page_item_container);
     printf("\n");
 }
-
 
 void _walk_vm_pages(char const *struct_name) {
     vm_page_item_t* vm_page_item = _lookup_page_item(struct_name);

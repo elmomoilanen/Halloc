@@ -119,7 +119,7 @@ static void test_free_data_block_allocation_small_size() {
     assert(page_item->first_page->system_page_count == needed_page_count);
     assert(free_meta_block->block_size == needed_block_size);
 
-    // following should already work at this point
+    // Following should already work at this point
     _free_data_blocks(free_meta_block);
     assert(page_item->first_page == NULL);
 
@@ -208,7 +208,7 @@ static void test_free_data_block_allocation_for_consecutive_times() {
     meta_block_t *second_free_meta_block = _allocate_free_data_block(page_item, 2 * page_item->struct_size);
     assert(second_free_meta_block != NULL);
 
-    // assuming that everything so far fits into one standard size page
+    // Assuming that everything so far fits into one standard size page
     assert(page_item->first_page->next == NULL);
 
     assert(first_free_meta_block->next == second_free_meta_block);
@@ -218,10 +218,8 @@ static void test_free_data_block_allocation_for_consecutive_times() {
     _free_data_blocks(second_free_meta_block);
     assert(first_free_meta_block->next->is_free == true);
 
-    // assuming that following allocation needs a new page (it becomes first in order)
-
+    // Assuming that following allocation needs a new page (it becomes first in order)
     needed_page_count = (100*page_item->struct_size)/system_page_size + 1;
-
     meta_block_t *third_free_meta_block = _allocate_free_data_block(page_item, 100 * page_item->struct_size);
     assert(third_free_meta_block != NULL);
 

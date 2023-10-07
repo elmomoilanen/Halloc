@@ -1,6 +1,3 @@
-/*
- * APIs for internal memory allocation tools.
-*/
 #ifndef __MEMTOOLS__
 #define __MEMTOOLS__
 
@@ -12,7 +9,7 @@
 
 #define MAX_STRUCT_NAME_SIZE 64
 #define SYS_MIN_PAGE_SIZE 4096
-#define MAX_SINGLE_PAGE_SIZE_BYTES 1073741824 // must be under 2^32 - 1
+#define MAX_SINGLE_PAGE_SIZE_BYTES 1073741824 // Must be under 2^32 - 1
 
 typedef bool bool_t;
 

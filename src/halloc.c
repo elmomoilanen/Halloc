@@ -11,7 +11,6 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
         fprintf(stderr, "%s(): Error: min allocation units is one.\n", __func__);
         return NULL;
     }
-
     if(strlen(struct_name) >= MAX_STRUCT_NAME_SIZE) {
         uint32_t const max_size = MAX_STRUCT_NAME_SIZE;
 
@@ -30,7 +29,6 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
         fprintf(stderr, "%s(): Error: new page max available memory is zero.\n", __func__);
         return NULL;
     }
-
     if(struct_size * units > max_mem) {
         fprintf(stderr,
             "%s(): Error: requested memory alloc size exceeds implementation limit of %u bytes.\n",
@@ -54,37 +52,35 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
         }
     }
 
-    meta_block_t *free_meta_block = _allocate_free_data_block(vm_page_item, units * vm_page_item->struct_size);
+    meta_block_t *free_meta_block = _allocate_free_data_block(
+        vm_page_item,
+        units * vm_page_item->struct_size
+    );
 
     if(free_meta_block != NULL) {
         memset(free_meta_block + 1, 0, free_meta_block->block_size);
-        return free_meta_block + 1; // starting address of the free data block
+        // Return starting address of the free data block
+        return free_meta_block + 1;
     }
-
     return NULL;
 }
 
 
 void _hfree(void* data) {
     if(data == NULL) return;
-
     meta_block_t *meta_block = (meta_block_t *)((char *)data - sizeof(meta_block_t));
-    
     _free_data_blocks(meta_block);
 }
-
 
 void _print_saved_page_items() {
     printf("virtual memory page items (types that have memory allocated)...\n");
     _walk_vm_page_items();
 }
 
-
 void _print_total_memory_usage() {
     printf("total memory usage by halloc...\n");
     _print_memory_usage();
 }
-
 
 void _print_type_memory_usage(char *struct_name) {
     printf("detailed memory usage for type `%s`...\n", struct_name);
