@@ -2,15 +2,15 @@
 
 [![main](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml/badge.svg)](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml)
 
-`Halloc` is a custom dynamic memory allocator for C programs. This library provides a public API that resembles the standard library function `calloc`. Halloc is built internally using doubly linked lists and leverages the `mmap` system call to create anonymous memory mappings in the virtual address space. Each memory allocation returned by Halloc is initialized to zero, ensuring a consistent and predictable initial state for new memory allocations.
+`Halloc` is a custom dynamic memory allocator for C programs. This library provides a public API that resembles the standard library function `calloc`. Halloc is constructed internally by doubly linked lists and leverages the `mmap` system call to create anonymous memory mappings in the virtual address space. Each memory allocation returned by Halloc is initialized to zero, ensuring a consistent and predictable initial state for new memory allocations.
 
-Library is designed to support the size of a single allocation up to approximately 1 GiB, achieved by adjusting the length of the memory mappings created by the mmap system call. Alongside the primary memory allocation and deallocation functions, the library also provides various memory statistics to be used. For more information, please refer to the **Usage** section below.
+Halloc allocator is designed to support the size of a single allocation up to approximately 1 GiB, achieved by adjusting the length of the memory mappings created by the mmap system call. Alongside the primary memory allocation and deallocation functions, this library also provides various memory statistics to be used. For more information, please refer to the **Usage** section below.
 
 This library can only be used safely with single-threaded code.
 
 ## Build ##
 
-This library uses the C11 standard. It is expected to work on most common Linux distros.
+Halloc uses the C11 standard. It is expected to work on most common Linux distros.
 
 To build the library, run
 
@@ -20,7 +20,7 @@ make
 
 If the build is successful, a static library file named `libhalloc.a` will be created in the current directory.
 
-Unit tests can be run as follows
+Tests can be run as follows
 
 ```bash
 make test
@@ -88,7 +88,7 @@ int main() {
 }
 ```
 
-To compile a source code file that uses this library, specify the include path for the header file halloc.h with the -I flag, and the library path and name for the static library file libhalloc.a with the -L and -l flags respectively. For example
+To compile a source code file that uses Halloc, specify the include path for the header file halloc.h with the -I flag, and the library path and name for the static library file libhalloc.a with the -L and -l flags respectively. For example
 
 ```bash
 gcc -Wall -Wextra -Werror -std=c11 -g test_prog.c -I./include -L. -lhalloc -o test_prog
