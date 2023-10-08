@@ -28,7 +28,7 @@ make test
 
 and this should be used to verify that the library is usable on the target machine.
 
-Optionally to the previous make command, the following command installs the library and header file in the system directories specified by the PREFIX variable, which defaults to /usr/local in the Makefile
+Optionally to the previous make command, the following command installs the library and header file in the system directories specified by the PREFIX variable, which defaults to `/usr/local` in the Makefile
 
 ```bash
 make install
@@ -88,7 +88,7 @@ int main() {
 }
 ```
 
-To compile a source code file that uses Halloc, specify the include path for the header file halloc.h with the -I flag, and the library path and name for the static library file libhalloc.a with the -L and -l flags respectively. For example
+To compile a source code file that uses Halloc, specify the include path for the header file `halloc.h` with the `-I` flag, and the library path and name for the static library file `libhalloc.a` with the `-L` and `-l` flags respectively. For example
 
 ```bash
 gcc -Wall -Wextra -Werror -std=c11 -g test_prog.c -I./include -L. -lhalloc -o test_prog
