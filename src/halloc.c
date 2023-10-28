@@ -73,16 +73,16 @@ void _hfree(void* data) {
 }
 
 void _print_saved_page_items() {
-    printf("virtual memory page items (types that have memory allocated)...\n");
+    fprintf(stdout, "virtual memory page items (types that have memory allocated)...\n");
     _walk_vm_page_items();
 }
 
 void _print_total_memory_usage() {
-    printf("total memory usage by halloc...\n");
+    fprintf(stdout, "total memory usage by halloc...\n");
     _print_memory_usage();
 }
 
 void _print_type_memory_usage(char *struct_name) {
-    printf("detailed memory usage for type `%s`...\n", struct_name);
+    fprintf(stdout, "detailed memory usage for type `%s`...\n", struct_name);
     _walk_vm_pages(struct_name);
 }

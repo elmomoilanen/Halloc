@@ -375,7 +375,7 @@ void _walk_vm_page_items() {
 
     TRAVERSE_PAGE_CONTAINERS_BEGIN(vm_page_item_container)
     {
-        printf("vm page container %u: %p\n\n",
+        fprintf(stdout, "vm page container %u: %p\n\n",
             page_counter + 1, (void *)vm_page_item_container
         );
 
@@ -384,17 +384,17 @@ void _walk_vm_page_items() {
 
         TRAVERSE_PAGE_ITEMS_BEGIN(vm_page_item)
         {
-            printf("> vm page item %u: %p\n", page_item_counter, (void *)vm_page_item);
-            printf("> item name `%s`, size %u bytes \n",
+            fprintf(stdout, "> vm page item %u: %p\n", page_item_counter, (void *)vm_page_item);
+            fprintf(stdout, "> item name `%s`, size %u bytes \n",
                 vm_page_item->struct_name, vm_page_item->struct_size
             );
 
             if (vm_page_item->first_page) {
-                printf("> allocated memory starts at: %p\n\n",
+                fprintf(stdout, "> allocated memory starts at: %p\n\n",
                     (void *)vm_page_item->first_page
                 );
             } else {
-                printf("\n");
+                fprintf(stdout, "\n");
             }
             ++page_item_counter;
         }
@@ -436,14 +436,14 @@ void _print_memory_usage() {
             }
             TRAVERSE_PAGES_END(vm_page);
 
-            printf("struct: %-32s    blocks: %-5u    free blocks: %-5u   used memory in bytes: %u\n",
+            fprintf(stdout, "struct: %-32s    blocks: %-5u    free blocks: %-5u   used memory in bytes: %u\n",
                 vm_page_item->struct_name, total_block_count, free_block_count, memory_usage
             );
         }
         TRAVERSE_PAGE_ITEMS_END(vm_page_item);
     }
     TRAVERSE_PAGE_CONTAINERS_END(vm_page_item_container);
-    printf("\n");
+    fprintf(stdout, "\n");
 }
 
 void _walk_vm_pages(char const *struct_name) {
@@ -491,14 +491,14 @@ void _walk_vm_pages(char const *struct_name) {
         }
         TRAVERSE_META_BLOCKS_IN_PAGE_END(meta_block);
 
-        printf("> vm page %p has %u free and %u allocated data blocks\n",
+        fprintf(stdout, "> vm page %p has %u free and %u allocated data blocks\n",
             (void *)vm_page, free_data_blocks, allocated_data_blocks
         );
-        printf("> largest free data block has address %p and size %u\n",
+        fprintf(stdout, "> largest free data block has address %p and size %u\n",
             (void *)(meta_block_with_largest_free_data_block + 1),
             meta_block_with_largest_free_data_block->block_size
         );
-        printf("> largest allocated data block has address %p and size %u\n\n",
+        fprintf(stdout, "> largest allocated data block has address %p and size %u\n\n",
             (void *)(meta_block_with_largest_allocated_data_block + 1),
             meta_block_with_largest_allocated_data_block->block_size
         );
