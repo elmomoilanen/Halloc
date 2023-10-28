@@ -48,7 +48,7 @@ Examples:
 #define hfree(data) (_hfree(data))
 
 /*
-Memory statistics APIs.
+Virtual memory statistics APIs.
 
 See currently saved page items (struct types), total memory usage by halloc or
 detailed memory footprint for a specific struct type.
