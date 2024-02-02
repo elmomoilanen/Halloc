@@ -7,11 +7,11 @@
 
 
 void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
-    if(units < 1) {
+    if (units < 1) {
         fprintf(stderr, "%s(): Error: min allocation units is one.\n", __func__);
         return NULL;
     }
-    if(strlen(struct_name) >= MAX_STRUCT_NAME_SIZE) {
+    if (strlen(struct_name) >= MAX_STRUCT_NAME_SIZE) {
         uint32_t const max_size = MAX_STRUCT_NAME_SIZE;
 
         fprintf(stderr,
@@ -29,7 +29,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
         fprintf(stderr, "%s(): Error: new page max available memory is zero.\n", __func__);
         return NULL;
     }
-    if(struct_size * units > max_mem) {
+    if (struct_size * units > max_mem) {
         fprintf(stderr,
             "%s(): Error: requested memory alloc size exceeds implementation limit of %u bytes.\n",
             __func__, max_mem
@@ -39,11 +39,11 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
 
     vm_page_item_t *vm_page_item = _lookup_page_item(struct_name);
 
-    if(vm_page_item == NULL) {
+    if (vm_page_item == NULL) {
         _register_page_item(struct_name, struct_size);
         vm_page_item = _lookup_page_item(struct_name);
 
-        if(vm_page_item == NULL) {
+        if (vm_page_item == NULL) {
             fprintf(stderr,
                 "%s(): Error: structure %s registeration failed.\n",
                 __func__, struct_name
@@ -57,7 +57,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
         units * vm_page_item->struct_size
     );
 
-    if(free_meta_block != NULL) {
+    if (free_meta_block != NULL) {
         memset(free_meta_block + 1, 0, free_meta_block->block_size);
         // Return starting address of the free data block
         return free_meta_block + 1;
@@ -67,7 +67,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
 
 
 void _hfree(void* data) {
-    if(data == NULL) return;
+    if (data == NULL) return;
     meta_block_t *meta_block = (meta_block_t *)((char *)data - sizeof(meta_block_t));
     _free_data_blocks(meta_block);
 }

@@ -75,7 +75,7 @@ static void test_page_item_registration_for_multiple() {
     assert(max_containers_per_page > 0);
 
     i32 const max_reg_number = max_containers_per_page + 25;
-    for(i32 j=1; j<=max_reg_number; ++j)
+    for (i32 j=1; j<=max_reg_number; ++j)
     {
         char name[20];
         snprintf(name, sizeof name, "%s_%d", "test", j);
@@ -139,7 +139,7 @@ static void test_free_data_block_allocation_medium_size() {
 
     assert(MAX_PAGE_UNITS > 0);
 
-    if(page_item->struct_size * request_count > _get_page_max_available_memory(MAX_PAGE_UNITS)) assert(0);
+    if (page_item->struct_size * request_count > _get_page_max_available_memory(MAX_PAGE_UNITS)) assert(0);
 
     u32 const needed_page_count = (request_count * page_item->struct_size) / system_page_size + 1;
     u32 const needed_block_size = request_count * page_item->struct_size;
@@ -169,7 +169,7 @@ static void test_free_data_block_allocation_large_size() {
     u32 const system_page_size = _get_system_page_size();
     u32 const request_count = 250000;
 
-    if(page_item->struct_size * request_count > _get_page_max_available_memory(MAX_PAGE_UNITS)) assert(0);
+    if (page_item->struct_size * request_count > _get_page_max_available_memory(MAX_PAGE_UNITS)) assert(0);
 
     u32 const needed_page_count = (request_count * page_item->struct_size) / system_page_size + 1;
     u32 const needed_block_size = request_count * page_item->struct_size;

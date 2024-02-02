@@ -129,7 +129,7 @@ static void test_allocation_small_other() {
 
     assert(p != NULL);
 
-    for(u32 j=0; j<alloc_count; ++j)
+    for (u32 j=0; j<alloc_count; ++j)
     {
         assert( (p+j) != NULL );
         assert( (*(p+j)).year == 0 );
@@ -148,7 +148,7 @@ static void test_allocation_medium() {
 
     assert(p != NULL);
 
-    for(u32 j=0; j<alloc_count; ++j)
+    for (u32 j=0; j<alloc_count; ++j)
     {
         assert( (p+j) != NULL );
         assert( (*(p+j)).volume == 0 );
@@ -166,7 +166,7 @@ static void test_allocation_large() {
 
     assert(p != NULL);
 
-    for(u32 j=0; j<alloc_count; ++j)
+    for (u32 j=0; j<alloc_count; ++j)
     {
         assert( (p+j) != NULL );
         assert( (*(p+j)).volume == 0 );

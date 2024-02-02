@@ -3,21 +3,21 @@
 #include "common.h"
 
 static void run_dll_tests() {
-    for(test_func *test=&dll_tests[0]; test->name; test++)
+    for (test_func *test=&dll_tests[0]; test->name; test++)
     {
         test->func();
     }
 }
 
 static void run_memtools_tests() {
-    for(test_func *test=&memtools_tests[0]; test->name; test++)
+    for (test_func *test=&memtools_tests[0]; test->name; test++)
     {
         test->func();
     }
 }
 
 static void run_halloc_tests() {
-    for(test_func *test=&halloc_tests[0]; test->name; test++)
+    for (test_func *test=&halloc_tests[0]; test->name; test++)
     {
         test->func();
     }

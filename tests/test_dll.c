@@ -23,12 +23,12 @@ static int16_t test_type_comparer(void *left, void *right) {
     u64 x_left = ((test_type_t *)GET_DLL_DATA(left_node, data_offset))->x;
     u64 x_right = ((test_type_t *)GET_DLL_DATA(right_node, data_offset))->x;
 
-    if( x_left >= x_right ) return -1;
+    if ( x_left >= x_right ) return -1;
     return 1;
 }
 
 static int16_t test_type_comparer_(void *left, void *right) {
-    if( ((test_type_t *)left)->x > ((test_type_t *)right)->x ) return -1;
+    if ( ((test_type_t *)left)->x > ((test_type_t *)right)->x ) return -1;
     return 1;
 }
 
@@ -89,7 +89,7 @@ static void test_traverse_forward_macro() {
 
     dll_t *dll = calloc(1, sizeof *dll);
 
-    for(u32 j=0; j<n_structs; ++j) _push_node(dll, &test_structs[j].node);
+    for (u32 j=0; j<n_structs; ++j) _push_node(dll, &test_structs[j].node);
 
     dll_node_t *node = dll->head;
 
@@ -115,7 +115,7 @@ static void test_data_offset_macro_multiple_nodes() {
         .offset=GET_ITEM_OFFSET(test_type_t, node)
     };
 
-    for(u32 j=0; j<structs; ++j)
+    for (u32 j=0; j<structs; ++j)
     {
         _init_node(&test_structs[j].node);
         _push_node(&dll, &test_structs[j].node);
@@ -146,7 +146,7 @@ static void test_traverse_backward_macro() {
     dll_t *dll = calloc(1, sizeof *dll);
     dll->offset = GET_ITEM_OFFSET(test_type_t, node);
 
-    for(u32 j=0; j<n_structs; ++j) _push_node(dll, &test_structs[j].node);
+    for (u32 j=0; j<n_structs; ++j) _push_node(dll, &test_structs[j].node);
 
     dll_node_t *node = dll->head;
     dll_node_t *active_node = NULL;
@@ -188,7 +188,7 @@ static void test_node_appending() {
         .offset=GET_ITEM_OFFSET(test_type_t, node)
     };
 
-    for(u32 j=0; j<n_structs; ++j)
+    for (u32 j=0; j<n_structs; ++j)
     {
         test_structs[j].x = j + 1;
         _append_node(&dll, &test_structs[j].node);
@@ -292,7 +292,7 @@ static void test_unlinking_node() {
         .offset=GET_ITEM_OFFSET(test_type_t, node)
     };
 
-    for(u32 j=0; j<n_structs; ++j) _push_node(&dll, &test_structs[j].node);
+    for (u32 j=0; j<n_structs; ++j) _push_node(&dll, &test_structs[j].node);
 
     dll_node_t *node = dll.head;
     u32 j = 0;
@@ -323,7 +323,7 @@ static void test_removal_of_node() {
         .offset=GET_ITEM_OFFSET(test_type_t, node)
     };
 
-    for(u32 j=0; j<n_structs; ++j)
+    for (u32 j=0; j<n_structs; ++j)
     {
         test_structs[j].x = j + 1;
         _push_node(&dll, &test_structs[j].node);
@@ -361,7 +361,7 @@ static void test_adding_and_removal_of_nodes() {
         .offset=GET_ITEM_OFFSET(test_type_t, node)
     };
 
-    for(u32 j=0; j<n_structs; ++j)
+    for (u32 j=0; j<n_structs; ++j)
     {
         test_structs[j].x = j;
         _push_node(&dll, &test_structs[j].node);
@@ -372,7 +372,7 @@ static void test_adding_and_removal_of_nodes() {
 
     TRAVERSE_DLL_FORWARD_BEGIN(node)
     {
-        if( ((test_type_t *)GET_DLL_DATA(node, dll.offset))->x % 3 == 0 )
+        if ( ((test_type_t *)GET_DLL_DATA(node, dll.offset))->x % 3 == 0 )
         {
             _remove_node(&dll, node);
             structs_left -= 1;
@@ -414,7 +414,7 @@ static void test_dll_sorting() {
 
     assert(n_structs == sizeof(x_values)/sizeof(x_values[0]));
 
-    for(u32 j=0; j<n_structs; ++j)
+    for (u32 j=0; j<n_structs; ++j)
     {
         test_structs[j].x = x_values[j];
         _push_node(&dll, &test_structs[j].node);
@@ -449,7 +449,7 @@ static void test_priority_queue() {
     tstructs[2].x = 5;
     tstructs[3].x = 1;
 
-    for(u32 j=0; j<4; ++j) _init_node(&tstructs[j].node);
+    for (u32 j=0; j<4; ++j) _init_node(&tstructs[j].node);
 
     uint32_t offset = GET_ITEM_OFFSET(test_type_t, node);
 

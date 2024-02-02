@@ -11,12 +11,12 @@ void _init_node(dll_node_t *node) {
 
 void _push_node(dll_t *dll, dll_node_t *node) {
     node->next = dll->head;
-    if(node->next != NULL) node->next->prev = node;
+    if (node->next != NULL) node->next->prev = node;
     dll->head = node;
 }
 
 void _append_node(dll_t *dll, dll_node_t *node) {
-    if(dll->head == NULL) {
+    if (dll->head == NULL) {
         dll->head = node;
         return;
     }
@@ -34,7 +34,7 @@ void _append_node(dll_t *dll, dll_node_t *node) {
 
 void _add_node_after(dll_node_t *node, dll_node_t *new_node) {
     new_node->next = node->next;
-    if(new_node->next != NULL) new_node->next->prev = new_node;
+    if (new_node->next != NULL) new_node->next->prev = new_node;
     node->next = new_node;
     new_node->prev = node;
 }
@@ -42,7 +42,7 @@ void _add_node_after(dll_node_t *node, dll_node_t *new_node) {
 void _add_node_before(dll_node_t *node, dll_node_t *new_node) {
     // Not safe for head node, use push in that case
     new_node->next = node;
-    if(new_node->next->prev != NULL) {
+    if (new_node->next->prev != NULL) {
         new_node->prev = new_node->next->prev;
         new_node->prev->next = new_node;
     }
@@ -51,13 +51,13 @@ void _add_node_before(dll_node_t *node, dll_node_t *new_node) {
 
 void _unlink_node(dll_node_t *node) {
     // Not safe for head node, use remove_node in that case
-    if(node->prev == NULL) {
-        if(node->next) {
+    if (node->prev == NULL) {
+        if (node->next) {
             node->next->prev = NULL;
             node->next = NULL;
         }
     } else {
-        if(node->next) {
+        if (node->next) {
             node->next->prev = node->prev;
             node->prev->next = node->next;
             node->prev = NULL;
@@ -70,7 +70,7 @@ void _unlink_node(dll_node_t *node) {
 }
 
 void _remove_node(dll_t *dll, dll_node_t *node) {
-    if(dll->head == node) dll->head = node->next;
+    if (dll->head == node) dll->head = node->next;
     _unlink_node(node);
 }
 
@@ -81,12 +81,12 @@ void _add_to_priority_queue(
     comp_func func)
 {
     // head->next is the first real node
-    if(head->next == NULL && head->prev == NULL) {
+    if (head->next == NULL && head->prev == NULL) {
         _add_node_after(head, new_node);
         return;
     }
 
-    if(head->next == NULL) {
+    if (head->next == NULL) {
         // Should never land here, if program logic ok
         fprintf(stderr,
             "%s(): Error: priority queue head next node NULL but prev node not NULL.\n",
@@ -95,7 +95,7 @@ void _add_to_priority_queue(
         exit(EXIT_FAILURE);
     }
 
-    if(func(GET_DLL_DATA(new_node, node_offset), GET_DLL_DATA(head->next, node_offset)) < 0) {
+    if (func(GET_DLL_DATA(new_node, node_offset), GET_DLL_DATA(head->next, node_offset)) < 0) {
         // Negative return value, lhs value is greater than rhs
         _add_node_after(head, new_node);
         return;
@@ -106,7 +106,7 @@ void _add_to_priority_queue(
 
     TRAVERSE_DLL_FORWARD_BEGIN(node)
     {
-        if(func(GET_DLL_DATA(new_node, node_offset), GET_DLL_DATA(node, node_offset)) < 0) {
+        if (func(GET_DLL_DATA(new_node, node_offset), GET_DLL_DATA(node, node_offset)) < 0) {
             // Negative return value, lhs value is greater than rhs
             _add_node_before(node, new_node);
             return;
@@ -121,7 +121,7 @@ void _add_to_priority_queue(
 static dll_node_t* _split_dll(dll_node_t *head) {
     dll_node_t *fast = head, *slow = head;
 
-    while(fast->next && fast->next->next) {
+    while (fast->next && fast->next->next) {
         slow = slow->next;
         fast = fast->next->next;
     }
@@ -132,8 +132,8 @@ static dll_node_t* _split_dll(dll_node_t *head) {
 }
 
 static dll_node_t* _merge(dll_node_t *left, dll_node_t *right, comp_func func) {
-    if(left == NULL) return right;
-    if(right == NULL) return left;
+    if (left == NULL) return right;
+    if (right == NULL) return left;
 
     /*
     Function pointer `func` must be capable of sorting nodes
@@ -141,7 +141,7 @@ static dll_node_t* _merge(dll_node_t *left, dll_node_t *right, comp_func func) {
     if the left node is smaller than right node and negative integer
     if the right node is smaller.
     */
-    if(func(left, right) > 0) {
+    if (func(left, right) > 0) {
         left->next = _merge(left->next, right, func);
         left->next->prev = left;
         left->prev = NULL;
@@ -155,7 +155,7 @@ static dll_node_t* _merge(dll_node_t *left, dll_node_t *right, comp_func func) {
 }
 
 dll_node_t* _msort(dll_node_t *head, comp_func func) {
-    if(head == NULL || head->next == NULL) return head;
+    if (head == NULL || head->next == NULL) return head;
 
     dll_node_t *tail = _split_dll(head);
 

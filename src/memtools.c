@@ -64,7 +64,7 @@ static void* _create_memory_mapping(size_t units) {
         0, 0
     );
 
-    if(vm_page == MAP_FAILED) {
+    if (vm_page == MAP_FAILED) {
         fprintf(stderr, "%s(): Error: virtual memory mapping failed.\n", __func__);
         perror("mmap: ");
         return NULL;
@@ -76,7 +76,7 @@ static void* _create_memory_mapping(size_t units) {
 }
 
 static void _delete_memory_mapping(void *addr, size_t units) {
-    if(munmap(addr, units * SYSTEM_PAGE_SIZE) == -1) {
+    if (munmap(addr, units * SYSTEM_PAGE_SIZE) == -1) {
         fprintf(stderr, "%s(): Error: deletion of virtual memory mapping failed.\n", __func__);
         perror("munmap: ");
     }
@@ -91,7 +91,7 @@ vm_page_item_t* _lookup_page_item(char const *struct_name) {
 
       TRAVERSE_PAGE_ITEMS_BEGIN(vm_page_item)
       {
-        if(strncmp(vm_page_item->struct_name, struct_name, MAX_STRUCT_NAME_SIZE) == 0) {
+        if (strncmp(vm_page_item->struct_name, struct_name, MAX_STRUCT_NAME_SIZE) == 0) {
             return vm_page_item;
         }
       }
@@ -121,7 +121,7 @@ static void _register_page_item_to_first_container(char const *struct_name, uint
 }
 
 void _register_page_item(char const *struct_name, uint32_t struct_size) {
-    if(first_vm_page_item_container == NULL) {
+    if (first_vm_page_item_container == NULL) {
         _register_page_item_to_first_container(struct_name, struct_size);
         return;
     }
@@ -131,13 +131,13 @@ void _register_page_item(char const *struct_name, uint32_t struct_size) {
 
     TRAVERSE_PAGE_ITEMS_BEGIN(vm_page_item)
     {
-        if(strncmp(vm_page_item->struct_name, struct_name, MAX_STRUCT_NAME_SIZE) != 0) {
+        if (strncmp(vm_page_item->struct_name, struct_name, MAX_STRUCT_NAME_SIZE) != 0) {
             ++counter;
         }
     }
     TRAVERSE_PAGE_ITEMS_END(vm_page_item);
 
-    if(counter == MAX_PAGE_ITEMS_PER_PAGE_CONTAINER) {
+    if (counter == MAX_PAGE_ITEMS_PER_PAGE_CONTAINER) {
         vm_page_item_container_t *new_vm_page_item_container = _create_memory_mapping(1);
         if (new_vm_page_item_container == NULL) {
             return;
@@ -171,7 +171,7 @@ static void _mark_vm_page_empty(vm_page_t *vm_page) {
 static meta_block_t* _get_largest_free_meta_block(vm_page_item_t* vm_page_item) {
     dll_node_t *largest_free_block = vm_page_item->heap_root_node.next;
 
-    if(largest_free_block) {
+    if (largest_free_block) {
         return (meta_block_t *)((char *)largest_free_block - (char *)&(((meta_block_t *)0)->heap_node));
     }
     return NULL;
@@ -202,7 +202,7 @@ static vm_page_t* _allocate_vm_page(vm_page_item_t *vm_page_item, uint32_t alloc
     vm_page->next = NULL;
     vm_page->page_item = vm_page_item;
 
-    if(vm_page_item->first_page == NULL) {
+    if (vm_page_item->first_page == NULL) {
         vm_page_item->first_page = vm_page;
     } else {
         vm_page_item->first_page->prev = vm_page;
@@ -220,7 +220,7 @@ int16_t _compare_free_block_sizes(void *meta_block_lhs, void *meta_block_rhs) {
 
 static void _update_meta_block_bindings(meta_block_t *alloc_meta_block, meta_block_t *free_meta_block) {
     free_meta_block->next = alloc_meta_block->next;
-    if(free_meta_block->next != NULL) {
+    if (free_meta_block->next != NULL) {
         free_meta_block->next->prev = free_meta_block;
     }
     free_meta_block->prev = alloc_meta_block;
@@ -232,7 +232,7 @@ static bool_t _split_free_data_block_for_allocation(
     meta_block_t *meta_block,
     uint32_t alloc_size)
 {   
-    if(alloc_size > meta_block->block_size) {
+    if (alloc_size > meta_block->block_size) {
         return false;
     }
 
@@ -243,7 +243,7 @@ static bool_t _split_free_data_block_for_allocation(
     // Safety: node here is never a head node of the priority queue
     _unlink_node(&meta_block->heap_node);
 
-    if(remain_size < sizeof(meta_block_t)) {
+    if (remain_size < sizeof(meta_block_t)) {
         // Hard internal fragmentation, residual block without a meta block
         return true;
     }
@@ -273,7 +273,7 @@ static bool_t _split_free_data_block_for_allocation(
 meta_block_t* _allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t alloc_size) {
     meta_block_t *largest_free_meta_block = _get_largest_free_meta_block(vm_page_item);
 
-    if(largest_free_meta_block == NULL || largest_free_meta_block->block_size < alloc_size) {
+    if (largest_free_meta_block == NULL || largest_free_meta_block->block_size < alloc_size) {
         vm_page_t *vm_page = _allocate_vm_page(vm_page_item, alloc_size);
         if (vm_page == NULL) {
             return NULL;
@@ -286,13 +286,13 @@ meta_block_t* _allocate_free_data_block(vm_page_item_t *vm_page_item, uint32_t a
             &_compare_free_block_sizes
         );
         
-        if(_split_free_data_block_for_allocation(vm_page_item, &vm_page->meta_block, alloc_size)) {
+        if (_split_free_data_block_for_allocation(vm_page_item, &vm_page->meta_block, alloc_size)) {
             return &vm_page->meta_block;
         }
         return NULL;
     }
 
-    if(_split_free_data_block_for_allocation(vm_page_item, largest_free_meta_block, alloc_size)) {
+    if (_split_free_data_block_for_allocation(vm_page_item, largest_free_meta_block, alloc_size)) {
         return largest_free_meta_block;
     }
     return NULL;
@@ -303,7 +303,7 @@ static void _merge_free_data_blocks(meta_block_t *meta_block_lhs, meta_block_t *
     meta_block_lhs->next = meta_block_rhs->next;
     meta_block_lhs->block_size += sizeof(meta_block_t) + meta_block_rhs->block_size;
 
-    if(meta_block_rhs->next != NULL) {
+    if (meta_block_rhs->next != NULL) {
         meta_block_rhs->next->prev = meta_block_lhs;
     }
 }
@@ -311,17 +311,17 @@ static void _merge_free_data_blocks(meta_block_t *meta_block_lhs, meta_block_t *
 static void _free_vm_page(vm_page_t *vm_page) {
     vm_page_item_t *vm_page_item = vm_page->page_item;
 
-    if(vm_page_item->first_page == vm_page) {
+    if (vm_page_item->first_page == vm_page) {
         vm_page_item->first_page = vm_page->next;
-        if(vm_page->next) vm_page->next->prev = NULL;
+        if (vm_page->next) vm_page->next->prev = NULL;
         vm_page->next = NULL;
         vm_page->prev = NULL;
     } else {
-        if(vm_page->next) vm_page->next->prev = vm_page->prev;
+        if (vm_page->next) vm_page->next->prev = vm_page->prev;
         vm_page->prev->next = vm_page->next;
     }
 
-    if(vm_page_item->first_page == NULL) {
+    if (vm_page_item->first_page == NULL) {
         vm_page_item->heap_root_node.next = NULL;
     }
 
@@ -335,7 +335,7 @@ void _free_data_blocks(meta_block_t *meta_block) {
 
     meta_block_t *next_meta_block = NEXT_META_BLOCK(meta_block);
 
-    if(next_meta_block == NULL) {
+    if (next_meta_block == NULL) {
         char *vm_page_end_addr = (char *)vm_page + vm_page->system_page_count * SYSTEM_PAGE_SIZE;
         char *data_block_end_addr = (char *)(meta_block + 1) + meta_block->block_size;
         meta_block->block_size += (uint32_t) ((uint64_t)vm_page_end_addr - (uint64_t)data_block_end_addr);
@@ -344,19 +344,19 @@ void _free_data_blocks(meta_block_t *meta_block) {
         meta_block->block_size += (uint32_t) ((uint64_t)next_meta_block - (uint64_t)next_meta_block_by_size);
     }
 
-    if(next_meta_block && next_meta_block->is_free == true) {
+    if (next_meta_block && next_meta_block->is_free == true) {
         _merge_free_data_blocks(meta_block, next_meta_block);
         updated_lowest_meta_block = meta_block;
     }
 
     meta_block_t *prev_meta_block = PREV_META_BLOCK(meta_block);
 
-    if(prev_meta_block && prev_meta_block->is_free) {
+    if (prev_meta_block && prev_meta_block->is_free) {
         _merge_free_data_blocks(prev_meta_block, meta_block);
         updated_lowest_meta_block = prev_meta_block;
     }
 
-    if(_is_vm_page_empty(vm_page)) {
+    if (_is_vm_page_empty(vm_page)) {
         _unlink_node(&vm_page->meta_block.heap_node);
         _free_vm_page(vm_page);
     } else {
@@ -426,7 +426,7 @@ void _print_memory_usage() {
                 TRAVERSE_META_BLOCKS_IN_PAGE_BEGIN(meta_block)
                 {
                     total_block_count += 1;
-                    if(meta_block->is_free == true) {
+                    if (meta_block->is_free == true) {
                         free_block_count += 1;
                     } else {
                         memory_usage += meta_block->block_size + sizeof(meta_block_t);
@@ -449,7 +449,7 @@ void _print_memory_usage() {
 void _walk_vm_pages(char const *struct_name) {
     vm_page_item_t* vm_page_item = _lookup_page_item(struct_name);
 
-    if(vm_page_item == NULL) {
+    if (vm_page_item == NULL) {
         fprintf(stderr,
             "%s(): Error: struct `%s` hasn't been registered yet.\n",
             __func__, struct_name
@@ -469,10 +469,10 @@ void _walk_vm_pages(char const *struct_name) {
 
         TRAVERSE_META_BLOCKS_IN_PAGE_BEGIN(meta_block)
         {
-            if(meta_block->is_free) {
+            if (meta_block->is_free) {
                 free_data_blocks++;
-                if(meta_block_with_largest_free_data_block != NULL) {
-                    if(meta_block->block_size > meta_block_with_largest_free_data_block->block_size) {
+                if (meta_block_with_largest_free_data_block != NULL) {
+                    if (meta_block->block_size > meta_block_with_largest_free_data_block->block_size) {
                         meta_block_with_largest_free_data_block = meta_block;
                     }
                 } else {
@@ -480,8 +480,8 @@ void _walk_vm_pages(char const *struct_name) {
                 }
             } else {
                 allocated_data_blocks++;
-                if(meta_block_with_largest_allocated_data_block != NULL) {
-                    if(meta_block->block_size > meta_block_with_largest_allocated_data_block->block_size) {
+                if (meta_block_with_largest_allocated_data_block != NULL) {
+                    if (meta_block->block_size > meta_block_with_largest_allocated_data_block->block_size) {
                         meta_block_with_largest_allocated_data_block = meta_block;
                     }
                 } else {
