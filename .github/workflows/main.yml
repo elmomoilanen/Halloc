@@ -7,13 +7,15 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: '15 19 3 * *'
 
 jobs:
   build:
     name: Build process
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Env setup
       run: |
         sudo apt update
