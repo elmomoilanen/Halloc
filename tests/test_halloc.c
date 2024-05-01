@@ -22,7 +22,7 @@ typedef struct {
 typedef struct {
   double *data;
   unsigned int size;
-} typeX;
+} myType;
 
 
 static void test_allocation_primitive_type_small() {
@@ -207,7 +207,7 @@ static void test_allocation_oversize() {
 
     product *p = halloc(product, alloc_count);
 
-    // allocation should fail due to its size, an error message should also appear in stdout
+    // Allocation should fail due to its size
     assert(p == NULL);
 
     PRINT_SUCCESS(__func__);
@@ -233,14 +233,14 @@ static void test_nested_allocation() {
 }
 
 static void test_readme_example_allocation() {
-    typeX *p = halloc(typeX, 1);
+    myType *p = halloc(myType, 1);
     assert(p != NULL);
     
     p->size = 25;
     p->data = halloc(double, p->size);
     assert(p->data != NULL);
 
-    p->data[p->size - 1] = 0.0;
+    p->data[p->size - 1] = 1.0;
   
     hfree(p->data);
     hfree(p);
