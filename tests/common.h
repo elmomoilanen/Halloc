@@ -12,10 +12,10 @@
     ANSI_COLOR_GREEN, ANSI_COLOR_RESET)
 
 typedef bool bool_t;
-typedef int i32;
-typedef unsigned int u32;
-typedef long i64;
-typedef unsigned long u64;
+typedef int32_t i32;
+typedef uint32_t u32;
+typedef int64_t i64;
+typedef uint64_t u64;
 
 void init_memtools_testing();
 
