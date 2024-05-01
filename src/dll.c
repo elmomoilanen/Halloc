@@ -40,7 +40,7 @@ void _add_node_after(dll_node_t *node, dll_node_t *new_node) {
 }
 
 void _add_node_before(dll_node_t *node, dll_node_t *new_node) {
-    // Not safe for head node, use push in that case
+    // Safety: Do not call for head node, use _push_node in that case
     new_node->next = node;
     if (new_node->next->prev != NULL) {
         new_node->prev = new_node->next->prev;
@@ -50,7 +50,7 @@ void _add_node_before(dll_node_t *node, dll_node_t *new_node) {
 }
 
 void _unlink_node(dll_node_t *node) {
-    // Not safe for head node, use remove_node in that case
+    // Safety: Do not call for head node, use _remove_node in that case
     if (node->prev == NULL) {
         if (node->next) {
             node->next->prev = NULL;
