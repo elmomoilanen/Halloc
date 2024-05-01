@@ -29,10 +29,10 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
         fprintf(stderr, "%s(): Error: new page max available memory is zero.\n", __func__);
         return NULL;
     }
-    if (struct_size * units > max_mem) {
+    if (struct_size > max_mem / units) {
         fprintf(stderr,
-            "%s(): Error: requested memory alloc size exceeds implementation limit of %u bytes.\n",
-            __func__, max_mem
+            "%s(): Error: requested alloc size %u * %zu exceeds implementation limit of %u bytes.\n",
+            __func__, struct_size, units, max_mem
         );
         return NULL;
     }
@@ -45,7 +45,7 @@ void* _halloc(char *struct_name, uint32_t struct_size, size_t units) {
 
         if (vm_page_item == NULL) {
             fprintf(stderr,
-                "%s(): Error: structure %s registeration failed.\n",
+                "%s(): Error: structure %s registration failed.\n",
                 __func__, struct_name
             );
             return NULL;
