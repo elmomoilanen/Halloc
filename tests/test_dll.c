@@ -33,11 +33,11 @@ static int16_t test_type_comparer_(void *left, void *right) {
 }
 
 static void test_offset_macro() {
-    assert(GET_ITEM_OFFSET(test_type_t, x) == 0);
-    assert(GET_ITEM_OFFSET(test_type_t, x2) == 8);
-    assert(GET_ITEM_OFFSET(test_type_t, n) == 16);
-    assert(GET_ITEM_OFFSET(test_type_t, x3) == 48);
-    assert(GET_ITEM_OFFSET(test_type_t, node) == 56);
+    assert(GET_ITEM_OFFSET(test_type_t, x) == offsetof(test_type_t, x));
+    assert(GET_ITEM_OFFSET(test_type_t, x2) == offsetof(test_type_t, x2));
+    assert(GET_ITEM_OFFSET(test_type_t, n) == offsetof(test_type_t, n));
+    assert(GET_ITEM_OFFSET(test_type_t, x3) == offsetof(test_type_t, x3));
+    assert(GET_ITEM_OFFSET(test_type_t, node) == offsetof(test_type_t, node));
 
     PRINT_SUCCESS(__func__);
 }
