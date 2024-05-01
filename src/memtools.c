@@ -248,8 +248,8 @@ static bool_t _split_free_data_block_for_allocation(
         return true;
     }
 
-    // remain_size < (sizeof(meta_block_t) + vm_page_item->struct_size)
-    // If true, soft internal fragmentation and meta block has a residual data block
+    // If remain_size < (sizeof(meta_block_t) + vm_page_item->struct_size), then
+    // it's soft internal fragmentation and meta block has a residual data block
 
     meta_block_t *next_meta_block = NEXT_META_BLOCK_BY_SIZE(meta_block);
     next_meta_block->is_free = true;
@@ -338,10 +338,10 @@ void _free_data_blocks(meta_block_t *meta_block) {
     if (next_meta_block == NULL) {
         char *vm_page_end_addr = (char *)vm_page + vm_page->system_page_count * SYSTEM_PAGE_SIZE;
         char *data_block_end_addr = (char *)(meta_block + 1) + meta_block->block_size;
-        meta_block->block_size += (uint32_t) ((uint64_t)vm_page_end_addr - (uint64_t)data_block_end_addr);
+        meta_block->block_size += (uint32_t) (vm_page_end_addr - data_block_end_addr);
     } else {
         meta_block_t *next_meta_block_by_size = NEXT_META_BLOCK_BY_SIZE(meta_block);
-        meta_block->block_size += (uint32_t) ((uint64_t)next_meta_block - (uint64_t)next_meta_block_by_size);
+        meta_block->block_size += (uint32_t) ((char *)next_meta_block - (char *)next_meta_block_by_size);
     }
 
     if (next_meta_block && next_meta_block->is_free == true) {
