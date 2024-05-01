@@ -2,9 +2,9 @@
 
 [![main](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml/badge.svg)](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml)
 
-`Halloc` is a custom dynamic memory allocator for C programs. This library provides a public API that resembles the standard library function `calloc`. Halloc is constructed internally by doubly linked lists and leverages the `mmap` system call to create anonymous memory mappings in the virtual address space. Each memory allocation returned by Halloc is initialized to zero, ensuring a consistent and predictable initial state for new memory allocations.
+`Halloc` is a custom dynamic memory allocator for C programs and provides a public API that resembles the C standard library function `calloc`. Halloc is constructed internally by doubly linked lists and leverages the `mmap` system call to create anonymous memory mappings in the virtual address space. Each byte of allocated memory by Halloc is initialized to zero, ensuring a consistent and predictable initial state for new memory allocations.
 
-Halloc allocator is designed to support the size of a single allocation up to approximately 1 GiB, achieved by adjusting the length of the memory mappings created by the mmap system call. Alongside the primary memory allocation and deallocation functions, this library also provides various memory statistics to be used. For more information, please refer to the **Usage** section below.
+Halloc allocator is designed to support the size of a single allocation up to approximately 1 GiB, achieved by adjusting the length of memory mappings created by the mmap system call. Alongside the primary memory allocation and deallocation functions, this library also provides various virtual memory statistics for use. For more information, please refer to the **Usage** section below.
 
 This library can only be used safely with single-threaded code.
 
@@ -40,15 +40,15 @@ To uninstall, run
 make uninstall
 ```
 
-In case of a build failure or tests not passing, this library may not be directly usable in your system.
+If the build fails or tests do not pass, this library may not be directly usable on your system.
 
 ## Usage ##
 
 Header file **include/halloc.h** defines the public API for the library.
 
-Use `halloc()` to request a new memory allocation and `hfree()` to deallocate previously allocated memory. In addition, there are three functions to provide detailed memory statistics for total or type specific memory usage.
+Use `halloc()` to request a new memory allocation and `hfree()` to deallocate previously allocated memory. In addition, there are three functions to provide detailed memory statistics for total or type specific virtual memory usage.
 
-Following code section gives an example use case of the library. The code snippet illustrates functionality that makes the library interesting: possibility to inspect virtual memory usage statistics via three different functions, each beginning with the "halloc_print" prefix.
+Following code section gives an example use case of the library. The code snippet illustrates functionality that makes the library interesting: the possibility to inspect memory usage statistics via three different functions, each of which begins with the "halloc_print" prefix.
 
 ```C
 #include <assert.h>
@@ -59,11 +59,11 @@ Following code section gives an example use case of the library. The code snippe
 typedef struct {
   double *data;
   unsigned int size;
-} typeX;
+} myType;
 
 int main() {
-  // Allocate memory for a struct `typeX`
-  typeX *ptr = halloc(typeX, 1);
+  // Allocate memory for a struct `myType`
+  myType *ptr = halloc(myType, 1);
   assert(ptr != NULL);
 
   ptr->size = 25;
@@ -71,13 +71,13 @@ int main() {
   ptr->data = halloc(double, ptr->size);
   assert(ptr->data != NULL);
 
-  ptr->data[ptr->size - 1] = 11.0;
+  ptr->data[ptr->size - 1] = 1.0;
 
   // Inspect runtime virtual memory usage
   halloc_print_saved_page_items();
   halloc_print_total_memory_usage();
 
-  halloc_print_type_memory_usage(typeX);
+  halloc_print_type_memory_usage(myType);
   halloc_print_type_memory_usage(double);
 
   // Nested allocations must be freed first to prevent memory leaks
