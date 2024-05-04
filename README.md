@@ -2,7 +2,7 @@
 
 [![main](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml/badge.svg)](https://github.com/elmomoilanen/Halloc/actions/workflows/main.yml)
 
-`Halloc` is a custom dynamic memory allocator for C programs and provides a public API that resembles the C standard library function `calloc`. Halloc is constructed internally by doubly linked lists and leverages the `mmap` system call to create anonymous memory mappings in the virtual address space. Each byte of allocated memory by Halloc is initialized to zero, ensuring a consistent and predictable initial state for new memory allocations.
+`Halloc` is a custom dynamic memory allocator for C programs providing a public API that resembles the C standard library function `calloc`. Halloc is constructed internally by doubly linked lists and leverages the `mmap` system call to create anonymous memory mappings in the virtual address space. Each byte of allocated memory by Halloc is initialized to zero, ensuring a consistent and predictable initial state for new memory allocations.
 
 Halloc allocator is designed to support the size of a single allocation up to approximately 1 GiB, achieved by adjusting the length of memory mappings created by the mmap system call. Alongside the primary memory allocation and deallocation functions, this library also provides various virtual memory statistics for use. For more information, please refer to the **Usage** section below.
 
