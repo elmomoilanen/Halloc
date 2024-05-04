@@ -8,7 +8,7 @@
 #define ANSI_COLOR_GREEN "\x1b[32m"
 #define ANSI_COLOR_RESET "\x1b[0m"
 
-#define PRINT_SUCCESS(func) printf("%s() %spassed%s\n", (func),\
+#define PRINT_SUCCESS(func) printf("%s %spassed%s\n", (func),\
     ANSI_COLOR_GREEN, ANSI_COLOR_RESET)
 
 typedef bool bool_t;
