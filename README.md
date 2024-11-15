@@ -10,7 +10,7 @@ This library can only be used safely with single-threaded code.
 
 ## Build ##
 
-Halloc uses the C11 standard. It is expected to work on most common Linux distros.
+Halloc uses the C11 standard. It is expected to work on most common Linux distros and macOS.
 
 To build the library, run
 
