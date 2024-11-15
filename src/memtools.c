@@ -59,9 +59,10 @@ static void* _create_memory_mapping(size_t units) {
     char *vm_page = mmap(
         NULL,
         units * SYSTEM_PAGE_SIZE,
-        PROT_READ|PROT_WRITE|PROT_EXEC,
-        MAP_ANONYMOUS|MAP_PRIVATE,
-        0, 0
+        PROT_READ|PROT_WRITE,
+        MAP_PRIVATE|MAP_ANONYMOUS,
+        -1,
+        0
     );
 
     if (vm_page == MAP_FAILED) {
