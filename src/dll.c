@@ -89,7 +89,7 @@ void _add_to_priority_queue(
     if (head->next == NULL) {
         // Should never land here, if program logic ok
         fprintf(stderr,
-            "%s(): Error: priority queue head next node NULL but prev node not NULL.\n",
+            "%s: error: priority queue head next node NULL but prev node not NULL.\n",
             __func__
         );
         exit(EXIT_FAILURE);

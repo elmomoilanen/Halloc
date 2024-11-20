@@ -20,12 +20,12 @@ void _set_system_page_size() {
     long page_size = sysconf(_SC_PAGESIZE);
 
     if (page_size == -1) {
-        fprintf(stderr, "%s(): %s\n", __func__, strerror(errno));
+        fprintf(stderr, "%s: %s\n", __func__, strerror(errno));
     }
 
     if (page_size < SYS_MIN_PAGE_SIZE) {
         fprintf(stderr,
-            "%s(): Error: system page size %ld doesn't meet the required minimum %d\n",
+            "%s: error: system page size %ld doesn't meet the required minimum %d\n",
             __func__, page_size, SYS_MIN_PAGE_SIZE
         );
         exit(EXIT_FAILURE);
@@ -66,7 +66,7 @@ static void* _create_memory_mapping(size_t units) {
     );
 
     if (vm_page == MAP_FAILED) {
-        fprintf(stderr, "%s(): Error: virtual memory mapping failed.\n", __func__);
+        fprintf(stderr, "%s: error: virtual memory mapping failed.\n", __func__);
         perror("mmap: ");
         return NULL;
     }
@@ -78,7 +78,7 @@ static void* _create_memory_mapping(size_t units) {
 
 static void _delete_memory_mapping(void *addr, size_t units) {
     if (munmap(addr, units * SYSTEM_PAGE_SIZE) == -1) {
-        fprintf(stderr, "%s(): Error: deletion of virtual memory mapping failed.\n", __func__);
+        fprintf(stderr, "%s: error: deletion of virtual memory mapping failed.\n", __func__);
         perror("munmap: ");
     }
 }
@@ -452,7 +452,7 @@ void _walk_vm_pages(char const *struct_name) {
 
     if (vm_page_item == NULL) {
         fprintf(stderr,
-            "%s(): Error: struct `%s` hasn't been registered yet.\n",
+            "%s: error: struct `%s` hasn't been registered yet.\n",
             __func__, struct_name
         );
         return;
